@@ -1,0 +1,26 @@
+package eterea.migration.api.rest.controller.facade;
+
+import eterea.migration.api.rest.extern.OrderNoteWeb;
+import eterea.migration.api.rest.service.facade.OrderNoteWebService;
+import jakarta.annotation.Resource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/wordpress")
+public class WordPressController {
+
+    @Resource
+    private OrderNoteWebService service;
+
+    @GetMapping("/capture")
+    public ResponseEntity<List<OrderNoteWeb>> capture() {
+        return new ResponseEntity<List<OrderNoteWeb>>(service.capture(), HttpStatus.OK);
+    }
+
+}
