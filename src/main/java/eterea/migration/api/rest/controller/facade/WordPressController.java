@@ -5,6 +5,7 @@ import eterea.migration.api.rest.service.facade.OrderNoteWebService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,6 +24,7 @@ public class WordPressController {
     }
 
     @GetMapping("/capture")
+    @Scheduled(cron = "0 0 * * * *")
     public ResponseEntity<List<OrderNoteWeb>> capture() {
         return new ResponseEntity<>(service.capture(), HttpStatus.OK);
     }
