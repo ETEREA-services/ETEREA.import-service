@@ -10,9 +10,6 @@ import java.time.OffsetDateTime
 data class Payment(
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var paymentId: Long? = null,
-
     var orderNumberId: Long? = null,
     var transaccionComercioId: String = "",
     var transaccionPlataformaId: String = "",
@@ -21,11 +18,11 @@ data class Payment(
     var estado: String = "",
     var detalle: String = "",
     var metodoPago: String? = null,
-    var medioPago: String = "",
+    var medioPago: String? = null,
     var estadoId: Int? = null,
-    var cuotas: Int = 1,
+    var cuotas: Int? = null,
     var informacionAdicional: String? = null,
-    var marcaTarjeta: String = "",
+    var marcaTarjeta: String? = null,
     var informacionAdicionalLink: String? = null,
     var fechaTransaccion: OffsetDateTime? = null,
     var fechaPago: OffsetDateTime? = null,

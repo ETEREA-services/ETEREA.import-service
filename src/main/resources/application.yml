@@ -1,5 +1,5 @@
 app:
-  server: 10.147.20.25:3308
+  server: 10.147.20.25:3306
   database: tsa.agencia.migracion
   user: root
   password: root
@@ -17,7 +17,6 @@ spring:
     password: ${app.password}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
-    database-platform: org.hibernate.dialect.MySQLDialect
     open-in-view: ${app.open-in-view}
     hibernate:
       ddl-auto: update

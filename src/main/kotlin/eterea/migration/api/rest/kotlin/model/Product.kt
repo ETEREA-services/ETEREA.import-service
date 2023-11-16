@@ -1,5 +1,6 @@
 package eterea.migration.api.rest.kotlin.model
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonProperty
 import eterea.migration.api.rest.model.Auditable
 import jakarta.persistence.*
@@ -7,7 +8,7 @@ import java.math.BigDecimal
 import java.time.OffsetDateTime
 
 @Entity
-@Table
+@Table(uniqueConstraints = [UniqueConstraint(columnNames = ["orderNumberId", "lineId"])])
 data class Product(
 
     @Id
@@ -19,7 +20,11 @@ data class Product(
     var name: String = "",
     var qty: Int = 0,
     var itemPrice: BigDecimal = BigDecimal.ZERO,
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssZ", timezone = "UTC")
     var bookingStart: OffsetDateTime? = null,
+
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ssZ", timezone = "UTC")
     var bookingEnd: OffsetDateTime? = null,
     var bookingDuration: Int = 0,
     var bookingPersons: Int = 0,

@@ -3,30 +3,60 @@ package eterea.migration.api.rest.service.facade;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import eterea.migration.api.rest.exception.ProductException;
 import eterea.migration.api.rest.extern.OrderNoteWeb;
 import eterea.migration.api.rest.extern.PaymentWeb;
+import eterea.migration.api.rest.extern.ProductWeb;
+import eterea.migration.api.rest.kotlin.model.OrderNote;
+import eterea.migration.api.rest.kotlin.model.Payment;
+import eterea.migration.api.rest.kotlin.model.Product;
+import eterea.migration.api.rest.service.OrderNoteService;
+import eterea.migration.api.rest.service.PaymentService;
+import eterea.migration.api.rest.service.ProductService;
+import eterea.migration.api.rest.service.internal.FileService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 @Service
 @Slf4j
 public class OrderNoteWebService {
 
+    private final FileService fileService;
+
+    private final OrderNoteService orderNoteService;
+
+    private final ProductService productService;
+
+    private final PaymentService paymentService;
+
+    @Autowired
+    public OrderNoteWebService(FileService fileService, OrderNoteService orderNoteService, ProductService productService, PaymentService paymentService) {
+        this.fileService = fileService;
+        this.orderNoteService = orderNoteService;
+        this.productService = productService;
+        this.paymentService = paymentService;
+    }
+
     public List<OrderNoteWeb> capture() {
         ObjectMapper objectMapper = new ObjectMapper();
-//		objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-        File file = new File("/data/temp/agencia/orders-2023-03-11-15.json");
+        File file = new File(fileService.getFile());
         List<OrderNoteWeb> orderNotes = null;
         try {
-            orderNotes = objectMapper.readValue(file, new TypeReference<List<OrderNoteWeb>>() {
+            orderNotes = objectMapper.readValue(file, new TypeReference<>() {
             });
             for (OrderNoteWeb orderNote : orderNotes) {
-                Integer inicioPago = orderNote.getOrderNotes().indexOf("PlusPago");
-                Integer finPago = orderNote.getOrderNotes().indexOf("Una nueva reserva");
+                int inicioPago = orderNote.getOrderNotes().indexOf("PlusPago");
+                int finPago = orderNote.getOrderNotes().indexOf("Una nueva reserva");
                 String plusPagoString = "";
                 if (inicioPago > -1 && finPago > -1) {
                     plusPagoString = orderNote.getOrderNotes().substring(inicioPago + 8, finPago - 1);
@@ -35,10 +65,87 @@ public class OrderNoteWebService {
                 }
             }
         } catch (JsonProcessingException e) {
-            log.debug("JsonProcessingException", e.getMessage());
+            log.debug("JsonProcessingException - {}", e.getMessage());
         } catch (IOException e) {
-            log.debug("IOException", e.getMessage());
+            log.debug("IOException - {}", e.getMessage());
         }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+        DateTimeFormatter formatterLocal = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        for (OrderNoteWeb orderNoteWeb : orderNotes) {
+            log.info("orderNoteWeb={}", orderNoteWeb);
+            OffsetDateTime orderDate = null;
+            if (!orderNoteWeb.getOrderDate().isEmpty()) {
+                orderDate = LocalDateTime.parse(orderNoteWeb.getOrderDate(), formatter).atOffset(ZoneOffset.UTC);
+            }
+            OffsetDateTime paidDate = null;
+            if (!orderNoteWeb.getPaidDate().isEmpty()) {
+                paidDate = LocalDateTime.parse(orderNoteWeb.getPaidDate(), formatter).atOffset(ZoneOffset.UTC);
+            }
+            OffsetDateTime completedDate = null;
+            if (!orderNoteWeb.getCompletedDate().isEmpty()) {
+                completedDate = LocalDateTime.parse(orderNoteWeb.getCompletedDate(), formatter).atOffset(ZoneOffset.UTC);
+            }
+            OffsetDateTime modifiedDate = null;
+            if (!orderNoteWeb.getModifiedDate().isEmpty()) {
+                modifiedDate = LocalDateTime.parse(orderNoteWeb.getModifiedDate(), formatter).atOffset(ZoneOffset.UTC);
+            }
+
+            OrderNote orderNote = new OrderNote(Long.valueOf(orderNoteWeb.getOrderNumber()), orderNoteWeb.getOrderStatus(), orderDate, paidDate, completedDate, modifiedDate
+                    , orderNoteWeb.getOrderCurrency(), orderNoteWeb.getCustomerNote(), orderNoteWeb.getBillingFirstName(), orderNoteWeb.getBillingLastName(), orderNoteWeb.getBillingFullName()
+                    , orderNoteWeb.getBillingDniPasaporte(), orderNoteWeb.getBillingAddress(), orderNoteWeb.getBillingCity(), orderNoteWeb.getBillingState(), orderNoteWeb.getBillingPostCode()
+                    , orderNoteWeb.getBillingCountry(), orderNoteWeb.getBillingEmail(), orderNoteWeb.getBillingPhone(), orderNoteWeb.getShippingFirstName(), orderNoteWeb.getShippingLastName()
+                    , orderNoteWeb.getShippingFullName(), orderNoteWeb.getShippingAddress(), orderNoteWeb.getShippingCity(), orderNoteWeb.getShippingState(), orderNoteWeb.getShippingPostCode()
+                    , orderNoteWeb.getShippingCountryFull(), orderNoteWeb.getPaymentMethodTitle(), orderNoteWeb.getCartDiscount(), orderNoteWeb.getOrderSubtotal(), orderNoteWeb.getOrderSubtotalRefunded()
+                    , orderNoteWeb.getShippingMethodTitle(), orderNoteWeb.getOrderShipping(), orderNoteWeb.getOrderShippingRefunded(), orderNoteWeb.getOrderTotal(), orderNoteWeb.getOrderTotalTax()
+                    , orderNoteWeb.getOrderNotes());
+            orderNote = orderNoteService.add(orderNote);
+            for (ProductWeb productWeb : orderNoteWeb.getProducts()) {
+                OffsetDateTime bookingStart = null;
+                if (!productWeb.getBookingStart().isEmpty()) {
+                    bookingStart = LocalDateTime.parse(productWeb.getBookingStart() + " 00:00:00", formatter).atOffset(ZoneOffset.UTC);
+                }
+                OffsetDateTime bookingEnd = null;
+                if (!productWeb.getBookingEnd().isEmpty()) {
+                    bookingEnd = LocalDateTime.parse(productWeb.getBookingEnd() + " 00:00:00", formatter).atOffset(ZoneOffset.UTC);
+                }
+
+                Long productId = null;
+                try {
+                    productId = productService.findByUnique(orderNote.getOrderNumberId(), productWeb.getLineId()).getProductId();
+                } catch (ProductException e) {
+                    productId = null;
+                }
+
+                Product product = new Product(productId, orderNote.getOrderNumberId(), productWeb.getSku(), productWeb.getLineId(), productWeb.getName()
+                        , Integer.parseInt(productWeb.getQty()), productWeb.getItemPrice(), bookingStart, bookingEnd, productWeb.getBookingDuration()
+                        , productWeb.getBookingPersons(), productWeb.getPersonTypes(), productWeb.getServiciosAdicionales(), productWeb.getPuntoDeEncuentro()
+                        , productWeb.getEncuentroHotel(), null);
+                product = productService.save(product);
+            }
+            PaymentWeb paymentWeb = orderNoteWeb.getPayment();
+            log.info("paymentWeb={}", paymentWeb);
+            if (paymentWeb != null) {
+                OffsetDateTime fechaTransaccion = null;
+                if (paymentWeb.getFechaTransaccion() != null) {
+                    fechaTransaccion = LocalDateTime.parse(paymentWeb.getFechaTransaccion(), formatterLocal).atOffset(ZoneOffset.UTC);
+                }
+                OffsetDateTime fechaPago = null;
+                if (paymentWeb.getFechaPago() != null) {
+                    fechaPago = LocalDateTime.parse(paymentWeb.getFechaPago(), formatterLocal).atOffset(ZoneOffset.UTC);
+                }
+                Integer cuotas = null;
+                if (paymentWeb.getCuotas() != null) {
+                    cuotas = Integer.parseInt(paymentWeb.getCuotas());
+                }
+                Payment payment = new Payment(orderNote.getOrderNumberId(), paymentWeb.getTransaccionComercioId(), paymentWeb.getTransaccionPlataformaId()
+                        , paymentWeb.getTipo(), new BigDecimal(paymentWeb.getMonto().replace(",", ".")), paymentWeb.getEstado(), paymentWeb.getDetalle(), paymentWeb.getMetodoPago()
+                        , paymentWeb.getMedioPago(), Integer.valueOf(paymentWeb.getEstadoId()), cuotas, paymentWeb.getInformacionAdicional()
+                        , paymentWeb.getMarcaTarjeta(), paymentWeb.getInformacionAdicionalLink(), fechaTransaccion, fechaPago, null);
+                payment = paymentService.save(payment);
+            }
+
+        }
+
         return orderNotes;
 
     }
