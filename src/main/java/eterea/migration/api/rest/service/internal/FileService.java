@@ -12,7 +12,7 @@ public class FileService {
 
     public String getFile() {
 
-        LocalDateTime time = LocalDateTime.now().minusHours(1);
+        LocalDateTime time = LocalDateTime.now().minusHours(4);
         int year = time.getYear();
         int month = time.getMonthValue();
         int day = time.getDayOfMonth();
