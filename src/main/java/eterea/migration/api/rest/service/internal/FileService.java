@@ -2,6 +2,8 @@ package eterea.migration.api.rest.service.internal;
 
 import com.jcraft.jsch.*;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -10,22 +12,29 @@ import java.time.LocalDateTime;
 @Slf4j
 public class FileService {
 
+    private final Environment environment;
+
+    @Autowired
+    public FileService(Environment environment) {
+        this.environment = environment;
+    }
+
     public String getFile() {
 
-        LocalDateTime time = LocalDateTime.now().minusHours(4);
+        Integer hoursOffset = Integer.valueOf(environment.getProperty("app.hours-offset"));
+        LocalDateTime time = LocalDateTime.now().minusHours(hoursOffset);
         int year = time.getYear();
         int month = time.getMonthValue();
         int day = time.getDayOfMonth();
         int hour = time.getHour();
         String filename = "orders-" + year + "-" + month + "-" + day + "-" + String.format("%02d", hour) + ".json";
 
-        String ftpHost = "119.8.73.151";
+        String ftpHost = environment.getProperty("app.ftp-host");
         int ftpPort = 22;
-        String ftpUser = "ftp-agencia";
-        String ftpPassword = "Agn123321Ines";
+        String ftpUser = environment.getProperty("app.ftp-user");
+        String ftpPassword = environment.getProperty("app.ftp-password");
         String remoteFilePath = "/home/ftp-agencia/" + filename;
-        filename = "/u/orders/" + filename;
-        log.info("filename={}", filename);
+        filename = environment.getProperty("app.local-path") + filename;
 
         try {
             JSch jsch = new JSch();
