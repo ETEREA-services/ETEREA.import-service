@@ -1,11 +1,13 @@
 package eterea.migration.api.rest.service.internal;
 
 import com.jcraft.jsch.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 
 @Service
+@Slf4j
 public class FileService {
 
     public String getFile() {
@@ -15,7 +17,7 @@ public class FileService {
         int month = time.getMonthValue();
         int day = time.getDayOfMonth();
         int hour = time.getHour();
-        String filename = "orders-" + year + "-" + month + "-" + day + "-" + hour + ".json";
+        String filename = "orders-" + year + "-" + month + "-" + day + "-" + String.format("%02d", hour) + ".json";
 
         String ftpHost = "119.8.73.151";
         int ftpPort = 22;
@@ -23,6 +25,7 @@ public class FileService {
         String ftpPassword = "Agn123321Ines";
         String remoteFilePath = "/home/ftp-agencia/" + filename;
         filename = "/data/temp/" + filename;
+        log.info("filename={}", filename);
 
         try {
             JSch jsch = new JSch();

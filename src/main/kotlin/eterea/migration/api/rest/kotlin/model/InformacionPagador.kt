@@ -1,6 +1,5 @@
 package eterea.migration.api.rest.kotlin.model
 
-import eterea.migration.api.rest.model.Auditable
 import jakarta.persistence.*
 
 @Entity
@@ -8,9 +7,7 @@ import jakarta.persistence.*
 data class InformacionPagador(
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var informacionPagadorId: Long? = null,
-    var paymentId: Long? = null,
+    var orderNumberId: Long? = null,
     var eMail: String? = "",
     var nombre: String = "",
     var numeroDocumento: String = "",
@@ -18,7 +15,7 @@ data class InformacionPagador(
     var tipoDocumento: String = "",
 
     @OneToOne(optional = true)
-    @JoinColumn(name = "paymentId", insertable = false, updatable = false)
+    @JoinColumn(name = "orderNumberId", insertable = false, updatable = false)
     var payment: Payment? = null
 
 ) : Auditable()

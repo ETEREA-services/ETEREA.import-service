@@ -4,15 +4,9 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eterea.migration.api.rest.exception.ProductException;
-import eterea.migration.api.rest.extern.OrderNoteWeb;
-import eterea.migration.api.rest.extern.PaymentWeb;
-import eterea.migration.api.rest.extern.ProductWeb;
-import eterea.migration.api.rest.kotlin.model.OrderNote;
-import eterea.migration.api.rest.kotlin.model.Payment;
-import eterea.migration.api.rest.kotlin.model.Product;
-import eterea.migration.api.rest.service.OrderNoteService;
-import eterea.migration.api.rest.service.PaymentService;
-import eterea.migration.api.rest.service.ProductService;
+import eterea.migration.api.rest.extern.*;
+import eterea.migration.api.rest.kotlin.model.*;
+import eterea.migration.api.rest.service.*;
 import eterea.migration.api.rest.service.internal.FileService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,12 +33,18 @@ public class OrderNoteWebService {
 
     private final PaymentService paymentService;
 
+    private final InformacionPagadorService informacionPagadorService;
+
+    private final ProductTransactionService productTransactionService;
+
     @Autowired
-    public OrderNoteWebService(FileService fileService, OrderNoteService orderNoteService, ProductService productService, PaymentService paymentService) {
+    public OrderNoteWebService(FileService fileService, OrderNoteService orderNoteService, ProductService productService, PaymentService paymentService, InformacionPagadorService informacionPagadorService, ProductTransactionService productTransactionService) {
         this.fileService = fileService;
         this.orderNoteService = orderNoteService;
         this.productService = productService;
         this.paymentService = paymentService;
+        this.informacionPagadorService = informacionPagadorService;
+        this.productTransactionService = productTransactionService;
     }
 
     public List<OrderNoteWeb> capture() {
@@ -123,7 +123,6 @@ public class OrderNoteWebService {
                 product = productService.save(product);
             }
             PaymentWeb paymentWeb = orderNoteWeb.getPayment();
-            log.info("paymentWeb={}", paymentWeb);
             if (paymentWeb != null) {
                 OffsetDateTime fechaTransaccion = null;
                 if (paymentWeb.getFechaTransaccion() != null) {
@@ -142,6 +141,20 @@ public class OrderNoteWebService {
                         , paymentWeb.getMedioPago(), Integer.valueOf(paymentWeb.getEstadoId()), cuotas, paymentWeb.getInformacionAdicional()
                         , paymentWeb.getMarcaTarjeta(), paymentWeb.getInformacionAdicionalLink(), fechaTransaccion, fechaPago, null);
                 payment = paymentService.save(payment);
+
+                InformacionPagadorWeb informacionPagadorWeb = paymentWeb.getInformacionPagador();
+                if (informacionPagadorWeb != null) {
+                    InformacionPagador informacionPagador = new InformacionPagador(payment.getOrderNumberId(), informacionPagadorWeb.getEMail(), informacionPagadorWeb.getNombre(), informacionPagadorWeb.getNumeroDocumento(), informacionPagadorWeb.getTelefono(), informacionPagadorWeb.getTipoDocumento(), null);
+                    log.info("informacionPagador={}", informacionPagador);
+                    informacionPagador = informacionPagadorService.save(informacionPagador);
+                }
+
+                productTransactionService.deleteAllByOrderNumberId(orderNote.getOrderNumberId());
+
+                for (ProductTransactionWeb productTransactionWeb : paymentWeb.getProductoTransactions()) {
+                    ProductTransaction productTransaction = new ProductTransaction(null, orderNote.getOrderNumberId(), productTransactionWeb.getNombreProducto(), productTransactionWeb.getMontoProducto(), null);
+                    productTransaction = productTransactionService.save(productTransaction);
+                }
             }
 
         }

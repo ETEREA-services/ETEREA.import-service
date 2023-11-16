@@ -1,7 +1,6 @@
 package eterea.migration.api.rest.kotlin.model
 
 import com.fasterxml.jackson.annotation.JsonFormat
-import eterea.migration.api.rest.model.Auditable
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.Id

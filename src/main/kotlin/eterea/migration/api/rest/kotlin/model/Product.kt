@@ -1,8 +1,6 @@
 package eterea.migration.api.rest.kotlin.model
 
 import com.fasterxml.jackson.annotation.JsonFormat
-import com.fasterxml.jackson.annotation.JsonProperty
-import eterea.migration.api.rest.model.Auditable
 import jakarta.persistence.*
 import java.math.BigDecimal
 import java.time.OffsetDateTime
