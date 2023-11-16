@@ -24,7 +24,7 @@ public class FileService {
         String ftpUser = "ftp-agencia";
         String ftpPassword = "Agn123321Ines";
         String remoteFilePath = "/home/ftp-agencia/" + filename;
-        filename = "/data/temp/" + filename;
+        filename = "/u/orders/" + filename;
         log.info("filename={}", filename);
 
         try {
