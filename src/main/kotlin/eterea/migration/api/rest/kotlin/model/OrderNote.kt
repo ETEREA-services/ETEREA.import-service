@@ -30,6 +30,8 @@ data class OrderNote(
     var modifiedDate: OffsetDateTime? = null,
 
     var orderCurrency: String = "",
+
+    @Column(columnDefinition = "TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
     var customerNote: String = "",
     var billingFirstName: String = "",
     var billingLastName: String = "",
