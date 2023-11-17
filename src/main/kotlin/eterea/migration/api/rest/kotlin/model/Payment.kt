@@ -15,6 +15,8 @@ data class Payment(
     var tipo: String = "",
     var monto: BigDecimal = BigDecimal.ZERO,
     var estado: String = "",
+
+    @Column(columnDefinition = "TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
     var detalle: String = "",
     var metodoPago: String? = null,
     var medioPago: String? = null,
