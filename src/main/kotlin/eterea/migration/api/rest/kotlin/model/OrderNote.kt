@@ -1,11 +1,7 @@
 package eterea.migration.api.rest.kotlin.model
 
 import com.fasterxml.jackson.annotation.JsonFormat
-import jakarta.persistence.Column
-import jakarta.persistence.Entity
-import jakarta.persistence.Id
-import jakarta.persistence.Lob
-import jakarta.persistence.Table
+import jakarta.persistence.*
 import java.math.BigDecimal
 import java.time.OffsetDateTime
 
@@ -33,6 +29,7 @@ data class OrderNote(
 
     @Column(columnDefinition = "TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
     var customerNote: String = "",
+
     var billingFirstName: String = "",
     var billingLastName: String = "",
     var billingFullName: String = "",
@@ -64,6 +61,14 @@ data class OrderNote(
 
     @Lob
     @Column(columnDefinition = "TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
-    var orderNotes: String = ""
+    var orderNotes: String = "",
+
+    @OneToMany
+    @JoinColumn(name = "orderNumberId", insertable = false, updatable = false)
+    var products: List<Product?>? = null,
+
+    @OneToOne
+    @JoinColumn(name = "orderNumberId", insertable = false, updatable = false)
+    var payment: Payment? = null
 
 ) : Auditable()

@@ -1,5 +1,6 @@
 package eterea.migration.api.rest.service;
 
+import eterea.migration.api.rest.exception.OrderNoteException;
 import eterea.migration.api.rest.kotlin.model.OrderNote;
 import eterea.migration.api.rest.repository.OrderNoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,10 @@ public class OrderNoteService {
 
     public OrderNote add(OrderNote orderNote) {
         return repository.save(orderNote);
+    }
+
+    public OrderNote findByOrderNumberId(Long orderNumberId) {
+        return repository.findByOrderNumberId(orderNumberId).orElseThrow(() -> new OrderNoteException(orderNumberId));
     }
 
 }

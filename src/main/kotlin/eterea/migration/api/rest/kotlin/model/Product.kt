@@ -31,8 +31,4 @@ data class Product(
     var puntoDeEncuentro: String = "",
     var encuentroHotel: String = "",
 
-    @ManyToOne
-    @JoinColumn(name = "orderNumberId", insertable = false, updatable = false)
-    var orderNote: OrderNote? = null
-
 ) : Auditable()

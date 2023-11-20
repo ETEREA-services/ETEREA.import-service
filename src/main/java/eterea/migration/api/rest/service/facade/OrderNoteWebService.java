@@ -97,7 +97,7 @@ public class OrderNoteWebService {
                     , orderNoteWeb.getShippingFullName(), orderNoteWeb.getShippingAddress(), orderNoteWeb.getShippingCity(), orderNoteWeb.getShippingState(), orderNoteWeb.getShippingPostCode()
                     , orderNoteWeb.getShippingCountryFull(), orderNoteWeb.getPaymentMethodTitle(), orderNoteWeb.getCartDiscount(), orderNoteWeb.getOrderSubtotal(), orderNoteWeb.getOrderSubtotalRefunded()
                     , orderNoteWeb.getShippingMethodTitle(), orderNoteWeb.getOrderShipping(), orderNoteWeb.getOrderShippingRefunded(), orderNoteWeb.getOrderTotal(), orderNoteWeb.getOrderTotalTax()
-                    , orderNoteWeb.getOrderNotes());
+                    , orderNoteWeb.getOrderNotes(), null, null);
             orderNote = orderNoteService.add(orderNote);
             for (ProductWeb productWeb : orderNoteWeb.getProducts()) {
                 OffsetDateTime bookingStart = null;
@@ -119,7 +119,7 @@ public class OrderNoteWebService {
                 Product product = new Product(productId, orderNote.getOrderNumberId(), productWeb.getSku(), productWeb.getLineId(), productWeb.getName()
                         , Integer.parseInt(productWeb.getQty()), productWeb.getItemPrice(), bookingStart, bookingEnd, productWeb.getBookingDuration()
                         , productWeb.getBookingPersons(), productWeb.getPersonTypes(), productWeb.getServiciosAdicionales(), productWeb.getPuntoDeEncuentro()
-                        , productWeb.getEncuentroHotel(), null);
+                        , productWeb.getEncuentroHotel());
                 product = productService.save(product);
             }
             PaymentWeb paymentWeb = orderNoteWeb.getPayment();
@@ -139,12 +139,12 @@ public class OrderNoteWebService {
                 Payment payment = new Payment(orderNote.getOrderNumberId(), paymentWeb.getTransaccionComercioId(), paymentWeb.getTransaccionPlataformaId()
                         , paymentWeb.getTipo(), new BigDecimal(paymentWeb.getMonto().replace(",", ".")), paymentWeb.getEstado(), paymentWeb.getDetalle(), paymentWeb.getMetodoPago()
                         , paymentWeb.getMedioPago(), Integer.valueOf(paymentWeb.getEstadoId()), cuotas, paymentWeb.getInformacionAdicional()
-                        , paymentWeb.getMarcaTarjeta(), paymentWeb.getInformacionAdicionalLink(), fechaTransaccion, fechaPago, null);
+                        , paymentWeb.getMarcaTarjeta(), paymentWeb.getInformacionAdicionalLink(), fechaTransaccion, fechaPago, null, null);
                 payment = paymentService.save(payment);
 
                 InformacionPagadorWeb informacionPagadorWeb = paymentWeb.getInformacionPagador();
                 if (informacionPagadorWeb != null) {
-                    InformacionPagador informacionPagador = new InformacionPagador(payment.getOrderNumberId(), informacionPagadorWeb.getEMail(), informacionPagadorWeb.getNombre(), informacionPagadorWeb.getNumeroDocumento(), informacionPagadorWeb.getTelefono(), informacionPagadorWeb.getTipoDocumento(), null);
+                    InformacionPagador informacionPagador = new InformacionPagador(payment.getOrderNumberId(), informacionPagadorWeb.getEMail(), informacionPagadorWeb.getNombre(), informacionPagadorWeb.getNumeroDocumento(), informacionPagadorWeb.getTelefono(), informacionPagadorWeb.getTipoDocumento());
                     log.info("informacionPagador={}", informacionPagador);
                     informacionPagador = informacionPagadorService.save(informacionPagador);
                 }
@@ -152,7 +152,7 @@ public class OrderNoteWebService {
                 productTransactionService.deleteAllByOrderNumberId(orderNote.getOrderNumberId());
 
                 for (ProductTransactionWeb productTransactionWeb : paymentWeb.getProductoTransactions()) {
-                    ProductTransaction productTransaction = new ProductTransaction(null, orderNote.getOrderNumberId(), productTransactionWeb.getNombreProducto(), productTransactionWeb.getMontoProducto(), null);
+                    ProductTransaction productTransaction = new ProductTransaction(null, orderNote.getOrderNumberId(), productTransactionWeb.getNombreProducto(), productTransactionWeb.getMontoProducto());
                     productTransaction = productTransactionService.save(productTransaction);
                 }
             }

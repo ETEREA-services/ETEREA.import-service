@@ -1,0 +1,63 @@
+version: "3.9"
+
+services:
+
+  migration.mysql:
+    image: dqmdz/mysql:5.7
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./data:/var/lib/mysql
+      - /etc/localtime:/etc/localtime:ro
+      - /etc/timezone:/etc/timezone:ro
+    restart: always
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - TZ=America/Argentina/Mendoza
+    networks:
+      - migration
+
+  migration.cloudbeaver:
+    image: dbeaver/cloudbeaver:latest
+    restart: always
+    depends_on:
+      - migration.mysql
+    ports:
+      - '8978:8978'
+    volumes:
+      - ./cloudbeaver:/opt/cloudbeaver/workspace
+    networks:
+      - migration
+
+#  migration.app:
+#    build: .
+#    depends_on:
+#      - migration.mysql
+#    ports:
+#      - 8280:8080
+#    environment:
+#      APP_SERVER: "migration.mysql:3306"
+#      APP_USER: root
+#      APP_PASSWORD: root
+#      APP_ADD-PROPERTIES: "false"
+#      APP_LOGGING: "debug"
+#      APP_LIVERELOAD_ENABLED: "true"
+#      APP_LIVERELOAD_PORT: 32880
+#      APP_OPEN-IN-VIEW: "false"
+#      APP_FTP-HOST: 119.8.73.151
+#      APP_FTP-USER: ftp-agencia
+#      APP_FTP-PASSWORD: Agn123321Ines
+#      APP_HOURS-OFFSET: 4
+#      APP_LOCAL-PATH: /tmp/
+#    networks:
+#      - migration
+
+networks:
+  migration:
+
+
+volumes:
+  migration.mysql:
+  migration.cloudbeaver:
+
+

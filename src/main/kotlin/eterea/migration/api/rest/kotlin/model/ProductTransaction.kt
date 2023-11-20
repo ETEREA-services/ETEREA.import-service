@@ -13,8 +13,4 @@ data class ProductTransaction(
     var nombreProducto: String = "",
     var montoProducto: String? = null,
 
-    @ManyToOne
-    @JoinColumn(name = "orderNumberId", insertable = false, updatable = false)
-    var payment: Payment? = null
-
 ) : Auditable()

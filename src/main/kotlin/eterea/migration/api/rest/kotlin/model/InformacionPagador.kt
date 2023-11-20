@@ -14,8 +14,4 @@ data class InformacionPagador(
     var telefono: String? = null,
     var tipoDocumento: String = "",
 
-    @OneToOne(optional = true)
-    @JoinColumn(name = "orderNumberId", insertable = false, updatable = false)
-    var payment: Payment? = null
-
 ) : Auditable()

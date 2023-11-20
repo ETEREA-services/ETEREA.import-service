@@ -28,8 +28,12 @@ data class Payment(
     var fechaTransaccion: OffsetDateTime? = null,
     var fechaPago: OffsetDateTime? = null,
 
-    @OneToOne(optional = true)
+    @OneToOne
     @JoinColumn(name = "orderNumberId", insertable = false, updatable = false)
-    var orderNote: OrderNote? = null
+    var informacionPagador: InformacionPagador? = null,
+
+    @OneToMany
+    @JoinColumn(name = "orderNumberId", insertable = false, updatable = false)
+    var productTransactions: List<ProductTransaction?>? = null
 
 ) : Auditable()
