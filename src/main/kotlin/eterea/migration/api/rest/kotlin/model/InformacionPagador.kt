@@ -12,6 +12,6 @@ data class InformacionPagador(
     var nombre: String = "",
     var numeroDocumento: String = "",
     var telefono: String? = null,
-    var tipoDocumento: String = "",
+    var tipoDocumento: String = ""
 
 ) : Auditable()
