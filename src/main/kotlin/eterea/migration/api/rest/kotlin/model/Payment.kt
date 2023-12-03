@@ -32,7 +32,7 @@ data class Payment(
     @JoinColumn(name = "orderNumberId", insertable = false, updatable = false)
     var informacionPagador: InformacionPagador? = null,
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "orderNumberId", insertable = false, updatable = false)
     var productTransactions: List<ProductTransaction?>? = null
 

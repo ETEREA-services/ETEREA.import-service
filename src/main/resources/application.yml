@@ -9,12 +9,15 @@ app:
     enabled: true
     port: 35980
   open-in-view: true
+  port: 8280
   ftp-host: 119.8.73.151
   ftp-user: ftp-agencia
   ftp-password: Agn123321Ines
   hours-offset: 1
   local-path: /data/temp/
 
+server:
+  port: ${app.port}
 
 spring:
   datasource:

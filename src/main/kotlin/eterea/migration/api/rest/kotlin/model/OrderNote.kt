@@ -63,7 +63,7 @@ data class OrderNote(
     @Column(columnDefinition = "TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci")
     var orderNotes: String = "",
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "orderNumberId", insertable = false, updatable = false)
     var products: List<Product?>? = null,
 

@@ -27,7 +27,7 @@ public class FileService {
         int month = time.getMonthValue();
         int day = time.getDayOfMonth();
         int hour = time.getHour();
-        String filename = "orders-" + year + "-" + month + "-" + day + "-" + String.format("%02d", hour) + ".json";
+        String filename = "orders-" + year + "-" + String.format("%02d", month) + "-" + String.format("%02d", day) + "-" + String.format("%02d", hour) + ".json";
 
         String ftpHost = environment.getProperty("app.ftp-host");
         int ftpPort = 22;
