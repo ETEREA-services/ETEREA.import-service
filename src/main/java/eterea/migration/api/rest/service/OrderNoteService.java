@@ -6,6 +6,9 @@ import eterea.migration.api.rest.repository.OrderNoteRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.OffsetDateTime;
+import java.util.List;
+
 @Service
 public class OrderNoteService {
 
@@ -24,4 +27,8 @@ public class OrderNoteService {
         return repository.findByOrderNumberId(orderNumberId).orElseThrow(() -> new OrderNoteException(orderNumberId));
     }
 
+    public List<OrderNote> findAllCompletedByLastTwoDays() {
+        OffsetDateTime completedDate = OffsetDateTime.now().minusDays(2);
+        return repository.findAllByOrderStatusAndCompletedDateGreaterThanEqual("Completado", completedDate);
+    }
 }

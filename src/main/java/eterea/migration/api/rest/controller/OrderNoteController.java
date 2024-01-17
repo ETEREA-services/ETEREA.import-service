@@ -9,6 +9,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/orderNote")
 public class OrderNoteController {
@@ -27,6 +29,11 @@ public class OrderNoteController {
         } catch (OrderNoteException e) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
         }
+    }
+
+    @GetMapping("/lastTwoDays")
+    public ResponseEntity<List<OrderNote>> findAllCompletedByLastTwoDays() {
+        return new ResponseEntity<>(service.findAllCompletedByLastTwoDays(), HttpStatus.OK);
     }
 
 }
