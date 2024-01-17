@@ -28,7 +28,7 @@ public class OrderNoteService {
     }
 
     public List<OrderNote> findAllCompletedByLastTwoDays() {
-        OffsetDateTime completedDate = OffsetDateTime.now().minusDays(2);
+        OffsetDateTime completedDate = OffsetDateTime.now().minusDays(1);
         return repository.findAllByOrderStatusAndCompletedDateGreaterThanEqual("Completado", completedDate);
     }
 }
