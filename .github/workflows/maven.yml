@@ -32,7 +32,7 @@ jobs:
       - uses: mr-smithers-excellent/docker-build-push@v6.2
         name: Build & push Docker image
         env:
-          VERSION: 3.6.12
+          VERSION: 3.7.13
         with:
           image: dqmdz/eterea.agencia.migracion
           tags: ${VERSION}, latest, "${GITHUB_REF#refs/heads/}.$(git rev-parse --short ${GITHUB_SHA})"
