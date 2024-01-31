@@ -55,7 +55,7 @@ public class OrderNoteWebService {
             orderNotes = objectMapper.readValue(file, new TypeReference<>() {
             });
             for (OrderNoteWeb orderNote : orderNotes) {
-                int inicioPago = orderNote.getOrderNotes().indexOf("PlusPago");
+                int inicioPago = orderNote.getOrderNotes().lastIndexOf("PlusPago");
                 int finPago = orderNote.getOrderNotes().indexOf("Una nueva reserva");
                 String plusPagoString = "";
                 if (inicioPago > -1 && finPago > -1) {
