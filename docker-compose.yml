@@ -17,18 +17,18 @@ services:
     networks:
       - migration
 
-  migration.cloudbeaver:
-    image: dbeaver/cloudbeaver:latest
-    restart: always
-    depends_on:
-      - migration.mysql
-    ports:
-      - '18978:8978'
-    volumes:
-      - ./cloudbeaver:/opt/cloudbeaver/workspace
-    networks:
-      - migration
-
+#  migration.cloudbeaver:
+#    image: dbeaver/cloudbeaver:latest
+#    restart: always
+#    depends_on:
+#      - migration.mysql
+#    ports:
+#      - '18978:8978'
+#    volumes:
+#      - ./cloudbeaver:/opt/cloudbeaver/workspace
+#    networks:
+#      - migration
+#
   migration.app:
     build: .
     depends_on:
@@ -59,6 +59,6 @@ networks:
 
 volumes:
   migration.mysql:
-  migration.cloudbeaver:
+#  migration.cloudbeaver:
 
 

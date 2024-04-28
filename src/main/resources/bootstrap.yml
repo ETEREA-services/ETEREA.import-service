@@ -1,5 +1,6 @@
 app:
   server: 10.147.20.25:3306
+  eureka: 8761
   database: tsa.agencia.migracion
   user: root
   password: root
@@ -19,7 +20,18 @@ app:
 server:
   port: ${app.port}
 
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://eureka:@eureka-service:${app.eureka}/eureka
+
 spring:
+  application:
+    name: import-service
   datasource:
     url: jdbc:mysql://${app.server}/${app.database}?useSSL=false&serverTimezone=UTC
     username: ${app.user}
@@ -41,9 +53,9 @@ spring:
 
 logging:
   level:
-    eterea.api.rest: DEBUG
+    eterea.migration.api.rest: ${app.logging}
     web: ${app.logging}
     org:
       hibernate:
         SQL: ${app.logging}
-
+      springframework.cloud.config: ${app.logging}

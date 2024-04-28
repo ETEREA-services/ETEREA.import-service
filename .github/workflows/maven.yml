@@ -6,7 +6,7 @@
 # separate terms of service, privacy policy, and support
 # documentation.
 
-name: ETEREA.migracion.api.rest CI
+name: ETEREA.import-service CI
 
 on:
   push:
@@ -34,9 +34,9 @@ jobs:
         env:
           VERSION: 3.7.14
         with:
-          image: dqmdz/eterea.agencia.migracion
+          image: dqmdz/eterea.import-service
           tags: ${VERSION}, latest, "${GITHUB_REF#refs/heads/}.$(git rev-parse --short ${GITHUB_SHA})"
           registry: docker.io
-          dockerfile: Dockerfile.github
+          dockerfile: Dockerfile
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
