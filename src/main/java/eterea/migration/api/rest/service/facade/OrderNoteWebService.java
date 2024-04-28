@@ -142,6 +142,15 @@ public class OrderNoteWebService {
                         , paymentWeb.getMarcaTarjeta(), paymentWeb.getInformacionAdicionalLink(), fechaTransaccion, fechaPago, null, null);
                 payment = paymentService.save(payment);
 
+                // Agregado para compensar la falta de date_completed y date_paid en order_note
+                if (orderNote.getCompletedDate() == null) {
+                    orderNote.setCompletedDate(payment.getFechaPago());
+                    if (orderNote.getPaidDate() == null) {
+                        orderNote.setPaidDate(payment.getFechaPago());
+                    }
+                    orderNote = orderNoteService.update(orderNote, orderNote.getOrderNumberId());
+                }
+
                 InformacionPagadorWeb informacionPagadorWeb = paymentWeb.getInformacionPagador();
                 if (informacionPagadorWeb != null) {
                     InformacionPagador informacionPagador = new InformacionPagador(payment.getOrderNumberId(), informacionPagadorWeb.getEMail(), informacionPagadorWeb.getNombre(), informacionPagadorWeb.getNumeroDocumento(), informacionPagadorWeb.getTelefono(), informacionPagadorWeb.getTipoDocumento());
