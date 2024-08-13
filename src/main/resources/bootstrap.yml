@@ -1,16 +1,11 @@
 app:
-  server: 10.147.20.25:3306
+  port: 8280
+  logging: debug
   eureka: 8761
+  server: 10.147.20.25:3306
   database: tsa.agencia.migracion
   user: root
   password: root
-  add-properties: true
-  logging: debug
-  livereload:
-    enabled: true
-    port: 35980
-  open-in-view: true
-  port: 8280
   ftp-host: 119.8.73.151
   ftp-user: ftp-agencia
   ftp-password: Agn123321Ines
@@ -38,14 +33,8 @@ spring:
     password: ${app.password}
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
-    open-in-view: ${app.open-in-view}
     hibernate:
       ddl-auto: update
-  devtools:
-    livereload:
-      enabled: ${app.livereload.enabled}
-      port: ${app.livereload.port}
-    add-properties: ${app.add-properties}
   security:
     user:
       name: admin
