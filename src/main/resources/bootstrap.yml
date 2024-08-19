@@ -1,16 +1,16 @@
 app:
   port: 8280
-  logging: debug
   eureka: 8761
+  logging: debug
   server: 10.147.20.25:3306
   database: tsa.agencia.migracion
   user: root
   password: root
-  ftp-host: 119.8.73.151
-  ftp-user: ftp-agencia
-  ftp-password: Agn123321Ines
+  ftp-host: 127.0.0.1
+  ftp-user: ftp-uid
+  ftp-password: pwd
   hours-offset: 1
-  local-path: /data/temp/
+  local-path: /tmp/
 
 server:
   port: ${app.port}
