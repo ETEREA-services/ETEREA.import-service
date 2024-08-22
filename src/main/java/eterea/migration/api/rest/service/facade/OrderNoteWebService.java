@@ -9,7 +9,6 @@ import eterea.migration.api.rest.kotlin.model.*;
 import eterea.migration.api.rest.service.*;
 import eterea.migration.api.rest.service.internal.FileService;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
@@ -26,18 +25,12 @@ import java.util.List;
 public class OrderNoteWebService {
 
     private final FileService fileService;
-
     private final OrderNoteService orderNoteService;
-
     private final ProductService productService;
-
     private final PaymentService paymentService;
-
     private final InformacionPagadorService informacionPagadorService;
-
     private final ProductTransactionService productTransactionService;
 
-    @Autowired
     public OrderNoteWebService(FileService fileService, OrderNoteService orderNoteService, ProductService productService, PaymentService paymentService, InformacionPagadorService informacionPagadorService, ProductTransactionService productTransactionService) {
         this.fileService = fileService;
         this.orderNoteService = orderNoteService;
@@ -48,6 +41,7 @@ public class OrderNoteWebService {
     }
 
     public List<OrderNoteWeb> capture() {
+        log.info("Capturing orders...");
         ObjectMapper objectMapper = new ObjectMapper();
         File file = new File(fileService.getFile());
         List<OrderNoteWeb> orderNotes = null;
