@@ -11,8 +11,10 @@ import java.util.Optional;
 @Repository
 public interface OrderNoteRepository extends JpaRepository<OrderNote, Long> {
 
-    public Optional<OrderNote> findByOrderNumberId(Long orderNumberId);
+    Optional<OrderNote> findByOrderNumberId(Long orderNumberId);
 
-    public List<OrderNote> findAllByOrderStatusAndCompletedDateGreaterThanEqual(String completado, OffsetDateTime completedDate);
+    List<OrderNote> findAllByOrderStatusAndCompletedDateGreaterThanEqual(String completado, OffsetDateTime completedDate);
+
+    List<OrderNote> findAllByOrderStatusInAndCompletedDateGreaterThanEqual(List<String> orderStatus, OffsetDateTime completedDate);
 
 }
