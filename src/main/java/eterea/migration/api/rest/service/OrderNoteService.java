@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -25,7 +26,8 @@ public class OrderNoteService {
 
     public List<OrderNote> findAllCompletedByLastTwoDays() {
         OffsetDateTime completedDate = OffsetDateTime.now().minusDays(1);
-        return repository.findAllByOrderStatusAndCompletedDateGreaterThanEqual("Completado", completedDate);
+        var completed_status = Arrays.asList("Completado", "Completed");
+        return repository.findAllByOrderStatusInAndCompletedDateGreaterThanEqual(completed_status, completedDate);
     }
 
     public OrderNote add(OrderNote orderNote) {
