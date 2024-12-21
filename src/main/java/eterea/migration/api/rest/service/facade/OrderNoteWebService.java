@@ -1,7 +1,7 @@
 package eterea.migration.api.rest.service.facade;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eterea.migration.api.rest.exception.ProductException;
 import eterea.migration.api.rest.extern.*;
@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -46,8 +47,14 @@ public class OrderNoteWebService {
         File file = new File(fileService.getFile());
         List<OrderNoteWeb> orderNotes = null;
         try {
-            orderNotes = objectMapper.readValue(file, new TypeReference<>() {
-            });
+            JsonNode jsonArray = objectMapper.readTree(file);
+            orderNotes = new ArrayList<>();
+            for (JsonNode node : jsonArray) {
+                OrderNoteWeb orderNote = objectMapper.treeToValue(node, OrderNoteWeb.class);
+                orderNote.setOriginalJson(node.toString());
+                orderNotes.add(orderNote);
+            }
+
             for (OrderNoteWeb orderNote : orderNotes) {
                 int inicioPago = orderNote.getOrderNotes().lastIndexOf("PlusPago");
                 int finPago = orderNote.getOrderNotes().indexOf("Una nueva reserva");
@@ -91,7 +98,7 @@ public class OrderNoteWebService {
                     , orderNoteWeb.getShippingFullName(), orderNoteWeb.getShippingAddress(), orderNoteWeb.getShippingCity(), orderNoteWeb.getShippingState(), orderNoteWeb.getShippingPostCode()
                     , orderNoteWeb.getShippingCountryFull(), orderNoteWeb.getPaymentMethodTitle(), orderNoteWeb.getCartDiscount(), orderNoteWeb.getOrderSubtotal(), orderNoteWeb.getOrderSubtotalRefunded()
                     , orderNoteWeb.getShippingMethodTitle(), orderNoteWeb.getOrderShipping(), orderNoteWeb.getOrderShippingRefunded(), orderNoteWeb.getOrderTotal(), orderNoteWeb.getOrderTotalTax()
-                    , orderNoteWeb.getOrderNotes(), null, null);
+                    , orderNoteWeb.getOrderNotes(), orderNoteWeb.getOriginalJson(), null, null);
             orderNote = orderNoteService.add(orderNote);
             for (ProductWeb productWeb : orderNoteWeb.getProducts()) {
                 OffsetDateTime bookingStart = null;

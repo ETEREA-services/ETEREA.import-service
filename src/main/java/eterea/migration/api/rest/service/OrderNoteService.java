@@ -43,7 +43,7 @@ public class OrderNoteService {
                     , newOrderNote.getShippingFullName(), newOrderNote.getShippingAddress(), newOrderNote.getShippingCity(), newOrderNote.getShippingState(), newOrderNote.getShippingPostCode()
                     , newOrderNote.getShippingCountryFull(), newOrderNote.getPaymentMethodTitle(), newOrderNote.getCartDiscount(), newOrderNote.getOrderSubtotal(), newOrderNote.getOrderSubtotalRefunded()
                     , newOrderNote.getShippingMethodTitle(), newOrderNote.getOrderShipping(), newOrderNote.getOrderShippingRefunded(), newOrderNote.getOrderTotal(), newOrderNote.getOrderTotalTax()
-                    , newOrderNote.getOrderNotes(), newOrderNote.getProducts(), newOrderNote.getPayment());
+                    , newOrderNote.getOrderNotes(), newOrderNote.getFullPayload(), newOrderNote.getProducts(), newOrderNote.getPayment());
             return repository.save(orderNote);
 
         }).orElseThrow(() -> new OrderNoteException(orderNumberId));
