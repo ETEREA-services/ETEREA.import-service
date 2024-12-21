@@ -2,7 +2,6 @@ package eterea.migration.api.rest.controller.facade;
 
 import eterea.migration.api.rest.extern.OrderNoteWeb;
 import eterea.migration.api.rest.service.facade.OrderNoteWebService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -18,7 +17,6 @@ public class WordPressController {
 
     private final OrderNoteWebService service;
 
-    @Autowired
     public WordPressController(OrderNoteWebService service) {
         this.service = service;
     }

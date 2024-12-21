@@ -128,4 +128,6 @@ public class OrderNoteWeb {
 
     private PaymentWeb payment;
 
+    private String originalJson;
+
 }
