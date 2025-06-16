@@ -122,9 +122,14 @@ public class OrderNoteWebService {
                     bookingDuration = 0;
                 }
 
+                Integer bookingPersons = productWeb.getBookingPersons();
+                if (bookingPersons == null) {
+                    bookingPersons = 0;
+                }
+
                 Product product = new Product(productId, orderNote.getOrderNumberId(), productWeb.getSku(), productWeb.getLineId(), productWeb.getName()
                         , Integer.parseInt(productWeb.getQty()), productWeb.getItemPrice(), bookingStart, bookingEnd, bookingDuration
-                        , productWeb.getBookingPersons(), productWeb.getPersonTypes(), productWeb.getServiciosAdicionales(), productWeb.getPuntoDeEncuentro()
+                        , bookingPersons, productWeb.getPersonTypes(), productWeb.getServiciosAdicionales(), productWeb.getPuntoDeEncuentro()
                         , productWeb.getEncuentroHotel());
                 product = productService.save(product);
             }
