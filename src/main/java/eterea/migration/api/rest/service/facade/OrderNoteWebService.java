@@ -117,8 +117,13 @@ public class OrderNoteWebService {
                     productId = null;
                 }
 
+                Integer bookingDuration = productWeb.getBookingDuration();
+                if (bookingDuration == null) {
+                    bookingDuration = 0;
+                }
+
                 Product product = new Product(productId, orderNote.getOrderNumberId(), productWeb.getSku(), productWeb.getLineId(), productWeb.getName()
-                        , Integer.parseInt(productWeb.getQty()), productWeb.getItemPrice(), bookingStart, bookingEnd, productWeb.getBookingDuration()
+                        , Integer.parseInt(productWeb.getQty()), productWeb.getItemPrice(), bookingStart, bookingEnd, bookingDuration
                         , productWeb.getBookingPersons(), productWeb.getPersonTypes(), productWeb.getServiciosAdicionales(), productWeb.getPuntoDeEncuentro()
                         , productWeb.getEncuentroHotel());
                 product = productService.save(product);
