@@ -1,12 +1,12 @@
 # ETEREA.import-service
 
 [![ETEREA.import-service CI](https://github.com/ETEREA-services/ETEREA.import-service/actions/workflows/maven.yml/badge.svg?branch=main)](https://github.com/ETEREA-services/ETEREA.import-service/actions/workflows/maven.yml)
-[![Java](https://img.shields.io/badge/Java-24-blue.svg)](https://www.java.com)
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.4.5-green.svg)](https://spring.io/projects/spring-boot)
-[![Spring Cloud](https://img.shields.io/badge/Spring%20Cloud-2024.0.1-blue.svg)](https://spring.io/projects/spring-cloud)
-[![Kotlin](https://img.shields.io/badge/Kotlin-2.1.20-purple.svg)](https://kotlinlang.org)
+[![Java](https://img.shields.io/badge/Java-21-blue.svg)](https://www.java.com)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.0-green.svg)](https://spring.io/projects/spring-boot)
+[![Spring Cloud](https://img.shields.io/badge/Spring%20Cloud-2025.0.0-blue.svg)](https://spring.io/projects/spring-cloud)
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.1.21-purple.svg)](https://kotlinlang.org)
 [![MySQL](https://img.shields.io/badge/MySQL-9.3.0-blue.svg)](https://www.mysql.com)
-[![OpenAPI](https://img.shields.io/badge/OpenAPI-2.8.8-green.svg)](https://www.openapis.org)
+[![OpenAPI](https://img.shields.io/badge/OpenAPI-2.8.9-green.svg)](https://www.openapis.org)
 
 ## Descripción
 
@@ -23,14 +23,15 @@ Servicio de importación para el sistema ETEREA, desarrollado con Spring Boot y 
 
 ## Tecnologías Utilizadas
 
-- **Java 24**: Lenguaje base del proyecto
-- **Spring Boot 3.4.5**: Framework principal
-- **Spring Cloud 2024.0.1**: Para microservicios
-- **Kotlin 2.1.20**: Lenguaje adicional para desarrollo
+- **Java 21**: Lenguaje base del proyecto
+- **Spring Boot 3.5.0**: Framework principal
+- **Spring Cloud 2025.0.0**: Para microservicios
+- **Kotlin 2.1.21**: Lenguaje adicional para desarrollo
 - **MySQL 9.3.0**: Base de datos
 - **Caffeine**: Caché en memoria
 - **Spring Security**: Seguridad y autenticación
-- **OpenAPI 2.8.8**: Documentación de API
+- **OpenAPI 2.8.9**: Documentación de API
+- **JSch 0.1.55**: Cliente SFTP
 
 ## Documentación
 
@@ -43,8 +44,8 @@ Servicio de importación para el sistema ETEREA, desarrollado con Spring Boot y 
 
 El servicio se configura mediante el archivo `bootstrap.yml`. Las principales configuraciones incluyen:
 
-- Puerto de la aplicación
-- Configuración de Eureka
+- Puerto de la aplicación (por defecto: 8280)
+- Configuración de Eureka (puerto: 8761)
 - Configuración de la base de datos MySQL
 - Configuración de SFTP
 - Configuración de logging
