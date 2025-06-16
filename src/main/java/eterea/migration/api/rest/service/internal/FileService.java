@@ -7,6 +7,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 @Service
 @Slf4j
@@ -21,7 +22,7 @@ public class FileService {
 
     public String getFile() {
 
-        Integer hoursOffset = Integer.valueOf(environment.getProperty("app.hours-offset"));
+        int hoursOffset = Integer.parseInt(Objects.requireNonNull(environment.getProperty("app.hours-offset")));
         LocalDateTime time = LocalDateTime.now().minusHours(hoursOffset);
         int year = time.getYear();
         int month = time.getMonthValue();
@@ -58,7 +59,7 @@ public class FileService {
             session.disconnect();
             System.out.println("Archivo descargado exitosamente.");
         } catch (JSchException | SftpException e) {
-            e.printStackTrace();
+            log.debug("Error en la sesion de archivo: {}", e.getMessage());
         }
 
         return filename;
