@@ -5,6 +5,14 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.2] - 2025-06-30
+### Fixed
+- Cambiando bookingPersons null por 0
+### Changed
+- Cambiando update a none para ddl-auto
+### Docs
+- update dependency versions and documentation
+
 ## [Unreleased]
 
 ## [0.0.1-SNAPSHOT] - 2025-06-16
