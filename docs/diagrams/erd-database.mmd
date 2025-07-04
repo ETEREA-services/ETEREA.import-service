@@ -1,0 +1,42 @@
+erDiagram
+    OrderNote ||--o{ ProductTransaction : contains
+    OrderNote ||--|{ Payment : has
+    OrderNote ||--|| InformacionPagador : "billed to"
+
+    ProductTransaction }o--|| Product : "is for a"
+
+    Product {
+        int id PK
+        varchar(255) name
+        varchar(255) sku
+        decimal price
+    }
+
+    OrderNote {
+        int id PK
+        varchar(255) order_key
+        datetime created_at
+        varchar(50) status
+    }
+
+    ProductTransaction {
+        int id PK
+        int order_note_id FK
+        int product_id FK
+        int quantity
+    }
+
+    Payment {
+        int id PK
+        int order_note_id FK
+        varchar(100) payment_method
+        decimal total
+    }
+
+    InformacionPagador {
+        int id PK
+        int order_note_id FK
+        varchar(255) first_name
+        varchar(255) last_name
+        varchar(255) email
+    }

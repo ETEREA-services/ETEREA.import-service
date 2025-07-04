@@ -1,0 +1,8 @@
+stateDiagram-v2
+    [*] --> PENDING: Creada
+    PENDING --> PROCESSING: Inicia importación
+    PROCESSING --> COMPLETED: Importación exitosa
+    PROCESSING --> FAILED: Error durante la importación
+
+    FAILED --> PENDING: Reintento manual
+    COMPLETED --> [*]
