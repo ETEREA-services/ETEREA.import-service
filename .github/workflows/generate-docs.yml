@@ -1,0 +1,83 @@
+
+name: Generate and Deploy Documentation
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Create public directory
+        run: mkdir -p public/diagrams
+
+      - name: Generate index.html
+        run: |
+          cat <<EOF > public/index.html
+          <!DOCTYPE html>
+          <html lang="en">
+          <head>
+              <meta charset="UTF-8">
+              <meta name="viewport" content="width=device-width, initial-scale=1.0">
+              <title>eterea.import-service - Documentation</title>
+              <style>
+                  body { font-family: sans-serif; }
+                  .container { max-width: 800px; margin: 0 auto; padding: 20px; }
+                  .diagram { margin-bottom: 40px; }
+              </style>
+          </head>
+          <body>
+              <div class="container">
+                  <h1>eterea.import-service</h1>
+                  <p>A Spring Boot application in Java for importing data from WordPress to TSA.</p>
+                  
+                  <div class="diagram">
+                      <h2>General Architecture</h2>
+                      <div class="mermaid">
+          $(cat docs/diagrams/arquitectura-general.mmd)
+                      </div>
+                  </div>
+
+                  <div class="diagram">
+                      <h2>Main Flow</h2>
+                      <div class="mermaid">
+          $(cat docs/diagrams/flujo-principal.mmd)
+                      </div>
+                  </div>
+
+                  <div class="diagram">
+                      <h2>Entity Lifecycle</h2>
+                      <div class="mermaid">
+          $(cat docs/diagrams/ciclo-de-vida-entidad.mmd)
+                      </div>
+                  </div>
+              </div>
+              <script type="module">
+                  import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@9/dist/mermaid.esm.min.mjs';
+                  mermaid.initialize({ startOnLoad: true });
+              </script>
+          </body>
+          </html>
+          EOF
+
+      - name: Copy diagrams
+        run: cp -r docs/diagrams/* public/diagrams/
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: ./public
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1

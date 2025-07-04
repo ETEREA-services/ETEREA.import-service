@@ -1,0 +1,24 @@
+
+graph TD
+    subgraph "eterea.import-service"
+        A["Spring Boot Application"]
+        B["WordPressController (Facade)"]
+        C["OrderNoteController"]
+        D["Services"]
+        E["Repositories"]
+    end
+
+    subgraph "External Systems"
+        F["WordPress API"]
+        G["MySQL Database"]
+    end
+
+    F -- HTTPS --> B
+    B -- Calls --> D
+    C -- Calls --> D
+    D -- Uses --> E
+    E -- Interacts with --> G
+    A -- Contains --> B
+    A -- Contains --> C
+    A -- Contains --> D
+    A -- Contains --> E

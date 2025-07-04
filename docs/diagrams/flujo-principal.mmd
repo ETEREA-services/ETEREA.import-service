@@ -1,0 +1,19 @@
+
+sequenceDiagram
+    participant User
+    participant WordPressController
+    participant OrderNoteWebService
+    participant OrderNoteService
+    participant OrderNoteRepository
+    participant WordPressAPI
+
+    User->>WordPressController: POST /api/v1/wordpress/notes
+    WordPressController->>OrderNoteWebService: importFromWordPress()
+    OrderNoteWebService->>WordPressAPI: GET /wp-json/wc/v3/orders
+    WordPressAPI-->>OrderNoteWebService: Order Data
+    OrderNoteWebService->>OrderNoteService: saveOrderNote(order)
+    OrderNoteService->>OrderNoteRepository: save(orderNote)
+    OrderNoteRepository-->>OrderNoteService: Saved OrderNote
+    OrderNoteService-->>OrderNoteWebService: Result
+    OrderNoteWebService-->>WordPressController: Import Status
+    WordPressController-->>User: 200 OK
