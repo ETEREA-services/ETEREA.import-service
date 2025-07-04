@@ -1,0 +1,25 @@
+graph TD
+    subgraph "Proveedor Cloud (Ej: AWS)"
+        subgraph "Red Privada Virtual (VPC)"
+            subgraph "Subred Pública"
+                C[Balanceador de Carga]
+            end
+            subgraph "Subred Privada"
+                A["Contenedor Docker <br><i>Eterea Import Service</i>"]
+                B["Base de Datos <br><i>MySQL/RDS</i>"]
+                A -- "JDBC" --> B
+            end
+        end
+    end
+
+    D[Internet] -- "HTTPS" --> C
+    C -- "Redirecciona tráfico a" --> A
+
+    subgraph "Servicios de Terceros"
+        E["API de WordPress"]
+    end
+
+    A -- "Llamada API (HTTPS)" --> E
+
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style B fill:#bbf,stroke:#333,stroke-width:2px

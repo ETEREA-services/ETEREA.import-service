@@ -1,0 +1,20 @@
+sequenceDiagram
+    participant User as Usuario
+    participant WP_Controller as WordPressController
+    participant ON_WebService as OrderNoteWebService
+    participant WP_API as API de WordPress
+    participant ON_Service as OrderNoteService
+    participant ON_Repo as OrderNoteRepository
+
+    User->>+WP_Controller: POST /api/v1/wordpress/notes
+    WP_Controller->>+ON_WebService: importFromWordPress()
+    ON_WebService->>+WP_API: GET /wp-json/wc/v3/orders
+    WP_API-->>-ON_WebService: Lista de Pedidos
+    loop Por cada Pedido
+        ON_WebService->>+ON_Service: saveOrderNote(pedido)
+        ON_Service->>+ON_Repo: save(orderNote)
+        ON_Repo-->>-ON_Service: OrderNote Guardada
+    end
+    ON_Service-->>-ON_WebService: Resultado
+    ON_WebService-->>-WP_Controller: Status de Importación
+    WP_Controller-->>-User: 200 OK

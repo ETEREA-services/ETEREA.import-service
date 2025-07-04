@@ -1,0 +1,19 @@
+graph TD
+    subgraph "Servicio de Importación"
+        A[EtereaMigrationApplication] --> B{OrderNoteController};
+        A --> C{WordPressController};
+        B --> D[OrderNoteService];
+        C --> E[OrderNoteWebService];
+        D --> F[OrderNoteRepository];
+        E --> D;
+    end
+
+    subgraph "Sistemas Externos"
+        G[Cliente API]
+        H[API de WordPress]
+        I[Base de Datos MySQL]
+    end
+
+    G -- Solicita importación --> C;
+    E -- Obtiene datos de --> H;
+    F -- Persiste datos en --> I;
