@@ -1,0 +1,8 @@
+
+stateDiagram-v2
+    [*] --> PENDING
+    PENDING --> PROCESSING: Start Import
+    PROCESSING --> IMPORTED: Import Successful
+    PROCESSING --> FAILED: Import Failed
+    FAILED --> PROCESSING: Retry Import
+    IMPORTED --> [*]
