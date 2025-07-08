@@ -5,6 +5,18 @@ Todos los cambios notables en este proyecto serán documentados en este archivo.
 El formato está basado en [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [Unreleased]
+
+## [0.1.0] - 2025-07-08
+### Added
+- feat(docs): add comprehensive diagrams and adapt workflow
+- feat(docs): implement new documentation workflow and bump version
+- feat(deps): update dependencies and improve documentation (#16)
+### Fixed
+- fix(ci): update deprecated GitHub Actions to latest versions
+### Build
+- build(release): bump version to 0.0.2
+
 ## [0.0.3] - 2025-07-04
 ### Fixed
 - Cambiando bookingPersons null por 0

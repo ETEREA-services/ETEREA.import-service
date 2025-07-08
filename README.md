@@ -2,9 +2,9 @@
 
 [![ETEREA.import-service CI](https://github.com/ETEREA-services/ETEREA.import-service/actions/workflows/maven.yml/badge.svg?branch=main)](https://github.com/ETEREA-services/ETEREA.import-service/actions/workflows/maven.yml)
 [![Java](https://img.shields.io/badge/Java-21-blue.svg)](https://www.java.com)
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.0-green.svg)](https://spring.io/projects/spring-boot)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.3-green.svg)](https://spring.io/projects/spring-boot)
 [![Spring Cloud](https://img.shields.io/badge/Spring%20Cloud-2025.0.0-blue.svg)](https://spring.io/projects/spring-cloud)
-[![Kotlin](https://img.shields.io/badge/Kotlin-2.1.21-purple.svg)](https://kotlinlang.org)
+[![Kotlin](https://img.shields.io/badge/Kotlin-2.2.0-purple.svg)](https://kotlinlang.org)
 [![MySQL](https://img.shields.io/badge/MySQL-9.3.0-blue.svg)](https://www.mysql.com)
 [![OpenAPI](https://img.shields.io/badge/OpenAPI-2.8.9-green.svg)](https://www.openapis.org)
 
@@ -23,10 +23,10 @@ Servicio de importación para el sistema ETEREA, desarrollado con Spring Boot y 
 
 ## Tecnologías Utilizadas
 
-- **Java 21**: Lenguaje base del proyecto
-- **Spring Boot 3.5.0**: Framework principal
+- **Java 24**: Lenguaje base del proyecto
+- **Spring Boot 3.5.3**: Framework principal
 - **Spring Cloud 2025.0.0**: Para microservicios
-- **Kotlin 2.1.21**: Lenguaje adicional para desarrollo
+- **Kotlin 2.2.0**: Lenguaje adicional para desarrollo
 - **MySQL 9.3.0**: Base de datos
 - **Caffeine**: Caché en memoria
 - **Spring Security**: Seguridad y autenticación

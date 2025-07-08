@@ -72,109 +72,114 @@ public class OrderNoteWebService {
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
         DateTimeFormatter formatterLocal = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        assert orderNotes != null;
         for (OrderNoteWeb orderNoteWeb : orderNotes) {
             log.info("orderNoteWeb={}", orderNoteWeb);
-            OffsetDateTime orderDate = null;
-            if (!orderNoteWeb.getOrderDate().isEmpty()) {
-                orderDate = LocalDateTime.parse(orderNoteWeb.getOrderDate(), formatter).atOffset(ZoneOffset.UTC);
-            }
-            OffsetDateTime paidDate = null;
-            if (!orderNoteWeb.getPaidDate().isEmpty()) {
-                paidDate = LocalDateTime.parse(orderNoteWeb.getPaidDate(), formatter).atOffset(ZoneOffset.UTC);
-            }
-            OffsetDateTime completedDate = null;
-            if (!orderNoteWeb.getCompletedDate().isEmpty()) {
-                completedDate = LocalDateTime.parse(orderNoteWeb.getCompletedDate(), formatter).atOffset(ZoneOffset.UTC);
-            }
-            OffsetDateTime modifiedDate = null;
-            if (!orderNoteWeb.getModifiedDate().isEmpty()) {
-                modifiedDate = LocalDateTime.parse(orderNoteWeb.getModifiedDate(), formatter).atOffset(ZoneOffset.UTC);
-            }
-
-            OrderNote orderNote = new OrderNote(Long.valueOf(orderNoteWeb.getOrderNumber()), orderNoteWeb.getOrderStatus(), orderDate, paidDate, completedDate, modifiedDate
-                    , orderNoteWeb.getOrderCurrency(), orderNoteWeb.getCustomerNote(), orderNoteWeb.getBillingFirstName(), orderNoteWeb.getBillingLastName(), orderNoteWeb.getBillingFullName()
-                    , orderNoteWeb.getBillingDniPasaporte(), orderNoteWeb.getBillingAddress(), orderNoteWeb.getBillingCity(), orderNoteWeb.getBillingState(), orderNoteWeb.getBillingPostCode()
-                    , orderNoteWeb.getBillingCountry(), orderNoteWeb.getBillingEmail(), orderNoteWeb.getBillingPhone(), orderNoteWeb.getShippingFirstName(), orderNoteWeb.getShippingLastName()
-                    , orderNoteWeb.getShippingFullName(), orderNoteWeb.getShippingAddress(), orderNoteWeb.getShippingCity(), orderNoteWeb.getShippingState(), orderNoteWeb.getShippingPostCode()
-                    , orderNoteWeb.getShippingCountryFull(), orderNoteWeb.getPaymentMethodTitle(), orderNoteWeb.getCartDiscount(), orderNoteWeb.getOrderSubtotal(), orderNoteWeb.getOrderSubtotalRefunded()
-                    , orderNoteWeb.getShippingMethodTitle(), orderNoteWeb.getOrderShipping(), orderNoteWeb.getOrderShippingRefunded(), orderNoteWeb.getOrderTotal(), orderNoteWeb.getOrderTotalTax()
-                    , orderNoteWeb.getOrderNotes(), orderNoteWeb.getOriginalJson(), null, null);
-            orderNote = orderNoteService.add(orderNote);
-            for (ProductWeb productWeb : orderNoteWeb.getProducts()) {
-                OffsetDateTime bookingStart = null;
-                if (!productWeb.getBookingStart().isEmpty()) {
-                    bookingStart = LocalDateTime.parse(productWeb.getBookingStart() + " 00:00:00", formatter).atOffset(ZoneOffset.UTC);
+            try {
+                OffsetDateTime orderDate = null;
+                if (!orderNoteWeb.getOrderDate().isEmpty()) {
+                    orderDate = LocalDateTime.parse(orderNoteWeb.getOrderDate(), formatter).atOffset(ZoneOffset.UTC);
                 }
-                OffsetDateTime bookingEnd = null;
-                if (!productWeb.getBookingEnd().isEmpty()) {
-                    bookingEnd = LocalDateTime.parse(productWeb.getBookingEnd() + " 00:00:00", formatter).atOffset(ZoneOffset.UTC);
+                OffsetDateTime paidDate = null;
+                if (!orderNoteWeb.getPaidDate().isEmpty()) {
+                    paidDate = LocalDateTime.parse(orderNoteWeb.getPaidDate(), formatter).atOffset(ZoneOffset.UTC);
+                }
+                OffsetDateTime completedDate = null;
+                if (!orderNoteWeb.getCompletedDate().isEmpty()) {
+                    completedDate = LocalDateTime.parse(orderNoteWeb.getCompletedDate(), formatter).atOffset(ZoneOffset.UTC);
+                }
+                OffsetDateTime modifiedDate = null;
+                if (!orderNoteWeb.getModifiedDate().isEmpty()) {
+                    modifiedDate = LocalDateTime.parse(orderNoteWeb.getModifiedDate(), formatter).atOffset(ZoneOffset.UTC);
                 }
 
-                Long productId = null;
-                try {
-                    productId = productService.findByUnique(orderNote.getOrderNumberId(), productWeb.getLineId()).getProductId();
-                } catch (ProductException e) {
-                    productId = null;
-                }
-
-                Integer bookingDuration = productWeb.getBookingDuration();
-                if (bookingDuration == null) {
-                    bookingDuration = 0;
-                }
-
-                Integer bookingPersons = productWeb.getBookingPersons();
-                if (bookingPersons == null) {
-                    bookingPersons = 0;
-                }
-
-                Product product = new Product(productId, orderNote.getOrderNumberId(), productWeb.getSku(), productWeb.getLineId(), productWeb.getName()
-                        , Integer.parseInt(productWeb.getQty()), productWeb.getItemPrice(), bookingStart, bookingEnd, bookingDuration
-                        , bookingPersons, productWeb.getPersonTypes(), productWeb.getServiciosAdicionales(), productWeb.getPuntoDeEncuentro()
-                        , productWeb.getEncuentroHotel());
-                product = productService.save(product);
-            }
-            PaymentWeb paymentWeb = orderNoteWeb.getPayment();
-            if (paymentWeb != null) {
-                OffsetDateTime fechaTransaccion = null;
-                if (paymentWeb.getFechaTransaccion() != null) {
-                    fechaTransaccion = LocalDateTime.parse(paymentWeb.getFechaTransaccion(), formatterLocal).atOffset(ZoneOffset.UTC);
-                }
-                OffsetDateTime fechaPago = null;
-                if (paymentWeb.getFechaPago() != null) {
-                    fechaPago = LocalDateTime.parse(paymentWeb.getFechaPago(), formatterLocal).atOffset(ZoneOffset.UTC);
-                }
-                Integer cuotas = null;
-                if (paymentWeb.getCuotas() != null) {
-                    cuotas = Integer.parseInt(paymentWeb.getCuotas());
-                }
-                Payment payment = new Payment(orderNote.getOrderNumberId(), paymentWeb.getTransaccionComercioId(), paymentWeb.getTransaccionPlataformaId()
-                        , paymentWeb.getTipo(), new BigDecimal(paymentWeb.getMonto().replace(",", ".")), paymentWeb.getEstado(), paymentWeb.getDetalle(), paymentWeb.getMetodoPago()
-                        , paymentWeb.getMedioPago(), Integer.valueOf(paymentWeb.getEstadoId()), cuotas, paymentWeb.getInformacionAdicional()
-                        , paymentWeb.getMarcaTarjeta(), paymentWeb.getInformacionAdicionalLink(), fechaTransaccion, fechaPago, null, null);
-                payment = paymentService.save(payment);
-
-                // Agregado para compensar la falta de date_completed y date_paid en order_note
-                if (orderNote.getCompletedDate() == null) {
-                    orderNote.setCompletedDate(payment.getFechaPago());
-                    if (orderNote.getPaidDate() == null) {
-                        orderNote.setPaidDate(payment.getFechaPago());
+                OrderNote orderNote = new OrderNote(Long.valueOf(orderNoteWeb.getOrderNumber()), orderNoteWeb.getOrderStatus(), orderDate, paidDate, completedDate, modifiedDate
+                        , orderNoteWeb.getOrderCurrency(), orderNoteWeb.getCustomerNote(), orderNoteWeb.getBillingFirstName(), orderNoteWeb.getBillingLastName(), orderNoteWeb.getBillingFullName()
+                        , orderNoteWeb.getBillingDniPasaporte(), orderNoteWeb.getBillingAddress(), orderNoteWeb.getBillingCity(), orderNoteWeb.getBillingState(), orderNoteWeb.getBillingPostCode()
+                        , orderNoteWeb.getBillingCountry(), orderNoteWeb.getBillingEmail(), orderNoteWeb.getBillingPhone(), orderNoteWeb.getShippingFirstName(), orderNoteWeb.getShippingLastName()
+                        , orderNoteWeb.getShippingFullName(), orderNoteWeb.getShippingAddress(), orderNoteWeb.getShippingCity(), orderNoteWeb.getShippingState(), orderNoteWeb.getShippingPostCode()
+                        , orderNoteWeb.getShippingCountryFull(), orderNoteWeb.getPaymentMethodTitle(), orderNoteWeb.getCartDiscount(), orderNoteWeb.getOrderSubtotal(), orderNoteWeb.getOrderSubtotalRefunded()
+                        , orderNoteWeb.getShippingMethodTitle(), orderNoteWeb.getOrderShipping(), orderNoteWeb.getOrderShippingRefunded(), orderNoteWeb.getOrderTotal(), orderNoteWeb.getOrderTotalTax()
+                        , orderNoteWeb.getOrderNotes(), orderNoteWeb.getOriginalJson(), null, null);
+                orderNote = orderNoteService.add(orderNote);
+                for (ProductWeb productWeb : orderNoteWeb.getProducts()) {
+                    OffsetDateTime bookingStart = null;
+                    if (!productWeb.getBookingStart().isEmpty()) {
+                        bookingStart = LocalDateTime.parse(productWeb.getBookingStart() + " 00:00:00", formatter).atOffset(ZoneOffset.UTC);
                     }
-                    orderNote = orderNoteService.update(orderNote, orderNote.getOrderNumberId());
-                }
+                    OffsetDateTime bookingEnd = null;
+                    if (!productWeb.getBookingEnd().isEmpty()) {
+                        bookingEnd = LocalDateTime.parse(productWeb.getBookingEnd() + " 00:00:00", formatter).atOffset(ZoneOffset.UTC);
+                    }
 
-                InformacionPagadorWeb informacionPagadorWeb = paymentWeb.getInformacionPagador();
-                if (informacionPagadorWeb != null) {
-                    InformacionPagador informacionPagador = new InformacionPagador(payment.getOrderNumberId(), informacionPagadorWeb.getEMail(), informacionPagadorWeb.getNombre(), informacionPagadorWeb.getNumeroDocumento(), informacionPagadorWeb.getTelefono(), informacionPagadorWeb.getTipoDocumento());
-                    log.info("informacionPagador={}", informacionPagador);
-                    informacionPagador = informacionPagadorService.save(informacionPagador);
-                }
+                    Long productId = null;
+                    try {
+                        productId = productService.findByUnique(orderNote.getOrderNumberId(), productWeb.getLineId()).getProductId();
+                    } catch (ProductException e) {
+                        productId = null;
+                    }
 
-                productTransactionService.deleteAllByOrderNumberId(orderNote.getOrderNumberId());
+                    Integer bookingDuration = productWeb.getBookingDuration();
+                    if (bookingDuration == null) {
+                        bookingDuration = 0;
+                    }
 
-                for (ProductTransactionWeb productTransactionWeb : paymentWeb.getProductoTransactions()) {
-                    ProductTransaction productTransaction = new ProductTransaction(null, orderNote.getOrderNumberId(), productTransactionWeb.getNombreProducto(), productTransactionWeb.getMontoProducto());
-                    productTransaction = productTransactionService.save(productTransaction);
+                    Integer bookingPersons = productWeb.getBookingPersons();
+                    if (bookingPersons == null) {
+                        bookingPersons = 0;
+                    }
+
+                    Product product = new Product(productId, orderNote.getOrderNumberId(), productWeb.getSku(), productWeb.getLineId(), productWeb.getName()
+                            , Integer.parseInt(productWeb.getQty()), productWeb.getItemPrice(), bookingStart, bookingEnd, bookingDuration
+                            , bookingPersons, productWeb.getPersonTypes(), productWeb.getServiciosAdicionales(), productWeb.getPuntoDeEncuentro()
+                            , productWeb.getEncuentroHotel());
+                    product = productService.save(product);
                 }
+                PaymentWeb paymentWeb = orderNoteWeb.getPayment();
+                if (paymentWeb != null) {
+                    OffsetDateTime fechaTransaccion = null;
+                    if (paymentWeb.getFechaTransaccion() != null) {
+                        fechaTransaccion = LocalDateTime.parse(paymentWeb.getFechaTransaccion(), formatterLocal).atOffset(ZoneOffset.UTC);
+                    }
+                    OffsetDateTime fechaPago = null;
+                    if (paymentWeb.getFechaPago() != null) {
+                        fechaPago = LocalDateTime.parse(paymentWeb.getFechaPago(), formatterLocal).atOffset(ZoneOffset.UTC);
+                    }
+                    Integer cuotas = null;
+                    if (paymentWeb.getCuotas() != null) {
+                        cuotas = Integer.parseInt(paymentWeb.getCuotas());
+                    }
+                    Payment payment = new Payment(orderNote.getOrderNumberId(), paymentWeb.getTransaccionComercioId(), paymentWeb.getTransaccionPlataformaId()
+                            , paymentWeb.getTipo(), new BigDecimal(paymentWeb.getMonto().replace(",", ".")), paymentWeb.getEstado(), paymentWeb.getDetalle(), paymentWeb.getMetodoPago()
+                            , paymentWeb.getMedioPago(), Integer.valueOf(paymentWeb.getEstadoId()), cuotas, paymentWeb.getInformacionAdicional()
+                            , paymentWeb.getMarcaTarjeta(), paymentWeb.getInformacionAdicionalLink(), fechaTransaccion, fechaPago, null, null);
+                    payment = paymentService.save(payment);
+
+                    // Agregado para compensar la falta de date_completed y date_paid en order_note
+                    if (orderNote.getCompletedDate() == null) {
+                        orderNote.setCompletedDate(payment.getFechaPago());
+                        if (orderNote.getPaidDate() == null) {
+                            orderNote.setPaidDate(payment.getFechaPago());
+                        }
+                        orderNote = orderNoteService.update(orderNote, orderNote.getOrderNumberId());
+                    }
+
+                    InformacionPagadorWeb informacionPagadorWeb = paymentWeb.getInformacionPagador();
+                    if (informacionPagadorWeb != null) {
+                        InformacionPagador informacionPagador = new InformacionPagador(payment.getOrderNumberId(), informacionPagadorWeb.getEMail(), informacionPagadorWeb.getNombre(), informacionPagadorWeb.getNumeroDocumento(), informacionPagadorWeb.getTelefono(), informacionPagadorWeb.getTipoDocumento());
+                        log.info("informacionPagador={}", informacionPagador);
+                        informacionPagador = informacionPagadorService.save(informacionPagador);
+                    }
+
+                    productTransactionService.deleteAllByOrderNumberId(orderNote.getOrderNumberId());
+
+                    for (ProductTransactionWeb productTransactionWeb : paymentWeb.getProductoTransactions()) {
+                        ProductTransaction productTransaction = new ProductTransaction(null, orderNote.getOrderNumberId(), productTransactionWeb.getNombreProducto(), productTransactionWeb.getMontoProducto());
+                        productTransaction = productTransactionService.save(productTransaction);
+                    }
+                }
+            } catch (NumberFormatException e) {
+                log.info("Error importing -> {}", e.getMessage());
             }
 
         }
