@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.termascacheuta</groupId>
     <artifactId>eterea.import.service</artifactId>
-    <version>0.0.3</version>
+    <version>0.1.0</version>
     <name>eterea.import.service</name>
     <description>Eterea Migration</description>
     <properties>
@@ -132,6 +132,9 @@
                         <plugin>jpa</plugin>
                     </compilerPlugins>
                     <jvmTarget>${java.version}</jvmTarget>
+                    <args>
+                        <arg>-Xannotation-default-target=param-property</arg>
+                    </args>
                 </configuration>
                 <executions>
                     <execution>
