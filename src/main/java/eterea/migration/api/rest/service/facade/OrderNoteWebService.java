@@ -93,14 +93,48 @@ public class OrderNoteWebService {
                     modifiedDate = LocalDateTime.parse(orderNoteWeb.getModifiedDate(), formatter).atOffset(ZoneOffset.UTC);
                 }
 
-                OrderNote orderNote = new OrderNote(Long.valueOf(orderNoteWeb.getOrderNumber()), orderNoteWeb.getOrderStatus(), orderDate, paidDate, completedDate, modifiedDate
-                        , orderNoteWeb.getOrderCurrency(), orderNoteWeb.getCustomerNote(), orderNoteWeb.getBillingFirstName(), orderNoteWeb.getBillingLastName(), orderNoteWeb.getBillingFullName()
-                        , orderNoteWeb.getBillingDniPasaporte(), orderNoteWeb.getBillingAddress(), orderNoteWeb.getBillingCity(), orderNoteWeb.getBillingState(), orderNoteWeb.getBillingPostCode()
-                        , orderNoteWeb.getBillingCountry(), orderNoteWeb.getBillingEmail(), orderNoteWeb.getBillingPhone(), orderNoteWeb.getShippingFirstName(), orderNoteWeb.getShippingLastName()
-                        , orderNoteWeb.getShippingFullName(), orderNoteWeb.getShippingAddress(), orderNoteWeb.getShippingCity(), orderNoteWeb.getShippingState(), orderNoteWeb.getShippingPostCode()
-                        , orderNoteWeb.getShippingCountryFull(), orderNoteWeb.getPaymentMethodTitle(), orderNoteWeb.getCartDiscount(), orderNoteWeb.getOrderSubtotal(), orderNoteWeb.getOrderSubtotalRefunded()
-                        , orderNoteWeb.getShippingMethodTitle(), orderNoteWeb.getOrderShipping(), orderNoteWeb.getOrderShippingRefunded(), orderNoteWeb.getOrderTotal(), orderNoteWeb.getOrderTotalTax()
-                        , orderNoteWeb.getOrderNotes(), orderNoteWeb.getOriginalJson(), null, null);
+                OrderNote orderNote = new OrderNote(
+                        Long.valueOf(orderNoteWeb.getOrderNumber()),
+                        orderNoteWeb.getOrderStatus(),
+                        orderDate,
+                        paidDate,
+                        completedDate,
+                        modifiedDate,
+                        orderNoteWeb.getOrderCurrency(),
+                        orderNoteWeb.getCustomerNote(),
+                        orderNoteWeb.getBillingFirstName(),
+                        orderNoteWeb.getBillingLastName(),
+                        orderNoteWeb.getBillingFullName(),
+                        orderNoteWeb.getBillingDniPasaporte(),
+                        orderNoteWeb.getBillingAddress(),
+                        orderNoteWeb.getBillingCity(),
+                        orderNoteWeb.getBillingState(),
+                        orderNoteWeb.getBillingPostCode(),
+                        orderNoteWeb.getBillingCountry(),
+                        orderNoteWeb.getBillingEmail(),
+                        orderNoteWeb.getBillingPhone(),
+                        orderNoteWeb.getShippingFirstName(),
+                        orderNoteWeb.getShippingLastName(),
+                        orderNoteWeb.getShippingFullName(),
+                        orderNoteWeb.getShippingAddress(),
+                        orderNoteWeb.getShippingCity(),
+                        orderNoteWeb.getShippingState(),
+                        orderNoteWeb.getShippingPostCode(),
+                        orderNoteWeb.getShippingCountryFull(),
+                        orderNoteWeb.getPaymentMethodTitle(),
+                        orderNoteWeb.getCartDiscount(),
+                        orderNoteWeb.getOrderSubtotal(),
+                        orderNoteWeb.getOrderSubtotalRefunded(),
+                        orderNoteWeb.getShippingMethodTitle(),
+                        orderNoteWeb.getOrderShipping(),
+                        orderNoteWeb.getOrderShippingRefunded(),
+                        orderNoteWeb.getOrderTotal(),
+                        orderNoteWeb.getOrderTotalTax(),
+                        orderNoteWeb.getOrderNotes(),
+                        orderNoteWeb.getOriginalJson(),
+                        null,
+                        null
+                );
                 orderNote = orderNoteService.add(orderNote);
                 for (ProductWeb productWeb : orderNoteWeb.getProducts()) {
                     OffsetDateTime bookingStart = null;
@@ -129,10 +163,23 @@ public class OrderNoteWebService {
                         bookingPersons = 0;
                     }
 
-                    Product product = new Product(productId, orderNote.getOrderNumberId(), productWeb.getSku(), productWeb.getLineId(), productWeb.getName()
-                            , Integer.parseInt(productWeb.getQty()), productWeb.getItemPrice(), bookingStart, bookingEnd, bookingDuration
-                            , bookingPersons, productWeb.getPersonTypes(), productWeb.getServiciosAdicionales(), productWeb.getPuntoDeEncuentro()
-                            , productWeb.getEncuentroHotel());
+                    Product product = new Product(
+                            productId,
+                            orderNote.getOrderNumberId(),
+                            productWeb.getSku(),
+                            productWeb.getLineId(),
+                            productWeb.getName(),
+                            Integer.parseInt(productWeb.getQty()),
+                            productWeb.getItemPrice(),
+                            bookingStart,
+                            bookingEnd,
+                            bookingDuration,
+                            bookingPersons,
+                            productWeb.getPersonTypes(),
+                            productWeb.getServiciosAdicionales(),
+                            productWeb.getPuntoDeEncuentro(),
+                            productWeb.getEncuentroHotel()
+                    );
                     product = productService.save(product);
                 }
                 PaymentWeb paymentWeb = orderNoteWeb.getPayment();
@@ -149,10 +196,26 @@ public class OrderNoteWebService {
                     if (paymentWeb.getCuotas() != null) {
                         cuotas = Integer.parseInt(paymentWeb.getCuotas());
                     }
-                    Payment payment = new Payment(orderNote.getOrderNumberId(), paymentWeb.getTransaccionComercioId(), paymentWeb.getTransaccionPlataformaId()
-                            , paymentWeb.getTipo(), new BigDecimal(paymentWeb.getMonto().replace(",", ".")), paymentWeb.getEstado(), paymentWeb.getDetalle(), paymentWeb.getMetodoPago()
-                            , paymentWeb.getMedioPago(), Integer.valueOf(paymentWeb.getEstadoId()), cuotas, paymentWeb.getInformacionAdicional()
-                            , paymentWeb.getMarcaTarjeta(), paymentWeb.getInformacionAdicionalLink(), fechaTransaccion, fechaPago, null, null);
+                    Payment payment = new Payment(
+                            orderNote.getOrderNumberId(),
+                            paymentWeb.getTransaccionComercioId(),
+                            paymentWeb.getTransaccionPlataformaId(),
+                            paymentWeb.getTipo(),
+                            new BigDecimal(paymentWeb.getMonto().replace(",", ".")),
+                            paymentWeb.getEstado(),
+                            paymentWeb.getDetalle(),
+                            paymentWeb.getMetodoPago(),
+                            paymentWeb.getMedioPago(),
+                            Integer.valueOf(paymentWeb.getEstadoId()),
+                            cuotas,
+                            paymentWeb.getInformacionAdicional(),
+                            paymentWeb.getMarcaTarjeta(),
+                            paymentWeb.getInformacionAdicionalLink(),
+                            fechaTransaccion,
+                            fechaPago,
+                            null,
+                            null
+                    );
                     payment = paymentService.save(payment);
 
                     // Agregado para compensar la falta de date_completed y date_paid en order_note
@@ -166,15 +229,49 @@ public class OrderNoteWebService {
 
                     InformacionPagadorWeb informacionPagadorWeb = paymentWeb.getInformacionPagador();
                     if (informacionPagadorWeb != null) {
-                        InformacionPagador informacionPagador = new InformacionPagador(payment.getOrderNumberId(), informacionPagadorWeb.getEMail(), informacionPagadorWeb.getNombre(), informacionPagadorWeb.getNumeroDocumento(), informacionPagadorWeb.getTelefono(), informacionPagadorWeb.getTipoDocumento());
-                        log.info("informacionPagador={}", informacionPagador);
-                        informacionPagador = informacionPagadorService.save(informacionPagador);
+                        if ("0".equals(paymentWeb.getMedioPago())) {
+                            String email = (informacionPagadorWeb.getEMail() == null) ? "" : informacionPagadorWeb.getEMail();
+                            String nombre = (informacionPagadorWeb.getNombre() == null) ? "" : informacionPagadorWeb.getNombre();
+                            String numeroDocumento = (informacionPagadorWeb.getNumeroDocumento() == null) ? "" : informacionPagadorWeb.getNumeroDocumento();
+                            String telefono = (informacionPagadorWeb.getTelefono() == null) ? "" : informacionPagadorWeb.getTelefono();
+                            String tipoDocumento = (informacionPagadorWeb.getTipoDocumento() == null) ? "" : informacionPagadorWeb.getTipoDocumento();
+                            InformacionPagador informacionPagador = new InformacionPagador(
+                                    payment.getOrderNumberId(),
+                                    email,
+                                    nombre,
+                                    numeroDocumento,
+                                    telefono,
+                                    tipoDocumento
+                            );
+                            log.info("informacionPagador={}", informacionPagador);
+                            informacionPagadorService.save(informacionPagador);
+                        } else {
+                            if (informacionPagadorWeb.getNombre() == null || informacionPagadorWeb.getNumeroDocumento() == null || informacionPagadorWeb.getTipoDocumento() == null) {
+                                log.error("InformacionPagador data is incomplete for orderNumberId={} and MedioPago is not 0. Skipping save.", payment.getOrderNumberId());
+                            } else {
+                                InformacionPagador informacionPagador = new InformacionPagador(
+                                        payment.getOrderNumberId(),
+                                        informacionPagadorWeb.getEMail(),
+                                        informacionPagadorWeb.getNombre(),
+                                        informacionPagadorWeb.getNumeroDocumento(),
+                                        informacionPagadorWeb.getTelefono(),
+                                        informacionPagadorWeb.getTipoDocumento()
+                                );
+                                log.info("informacionPagador={}", informacionPagador);
+                                informacionPagadorService.save(informacionPagador);
+                            }
+                        }
                     }
 
                     productTransactionService.deleteAllByOrderNumberId(orderNote.getOrderNumberId());
 
                     for (ProductTransactionWeb productTransactionWeb : paymentWeb.getProductoTransactions()) {
-                        ProductTransaction productTransaction = new ProductTransaction(null, orderNote.getOrderNumberId(), productTransactionWeb.getNombreProducto(), productTransactionWeb.getMontoProducto());
+                        ProductTransaction productTransaction = new ProductTransaction(
+                                null,
+                                orderNote.getOrderNumberId(),
+                                productTransactionWeb.getNombreProducto(),
+                                productTransactionWeb.getMontoProducto()
+                        );
                         productTransaction = productTransactionService.save(productTransaction);
                     }
                 }

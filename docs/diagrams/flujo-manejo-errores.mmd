@@ -1,14 +1,22 @@
-sequenceDiagram
-    participant ON_WebService as OrderNoteWebService
-    participant WP_API as API de WordPress
-    participant Logger as SistemaDeLogs
-    participant ON_Service as OrderNoteService
+graph TD
+    A[Inicio del Proceso de Importación] --> B{¿Datos de Entrada Válidos?};
+    B -- Sí --> C[Procesamiento Normal];
+    B -- No --> D{¿Error Crítico?};
+    D -- Sí --> E[Fin del Proceso con Error Grave];
+    D -- No --> F{¿Datos de Pagador Incompletos?};
+    F -- Sí --> G[Registrar Error en Log];
+    G --> H[Continuar con la Siguiente Orden];
+    F -- No --> I[Manejo de Otros Errores Menores];
+    I --> H;
+    C --> J[Fin del Proceso Exitoso];
 
-    ON_WebService->>+WP_API: GET /wp-json/wc/v3/orders
-    
-    alt Falla en la API de WordPress
-        WP_API-->>-ON_WebService: 500 Internal Server Error
-        ON_WebService->>+Logger: log.error("Error al obtener datos de WordPress: 500")
-        Logger-->>-ON_WebService: Log registrado
-        ON_WebService-xON_Service: Lanza OrderNoteException("Fallo la importación")
+    subgraph Leyenda
+        direction LR
+        L1[Proceso]
+        L2{Decisión}
     end
+
+    style A fill:#c9ffc9,stroke:#333,stroke-width:2px
+    style J fill:#c9ffc9,stroke:#333,stroke-width:2px
+    style E fill:#ffc9c9,stroke:#333,stroke-width:2px
+    style G fill:#ffebc9,stroke:#333,stroke-width:2px

@@ -7,6 +7,13 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 
 ## [Unreleased]
 
+## [0.1.1] - 2025-07-09
+### Fixed
+- Corregido `NullPointerException` al procesar órdenes donde la información del pagador es nula.
+### Changed
+- Mejorada la robustez del proceso de importación. El sistema ahora registra un error y continúa si los datos del pagador son incompletos, en lugar de detenerse.
+
+
 ## [0.1.0] - 2025-07-08
 ### Added
 - feat(docs): add comprehensive diagrams and adapt workflow
@@ -33,8 +40,6 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 - Cambiando update a none para ddl-auto
 ### Docs
 - update dependency versions and documentation
-
-## [Unreleased]
 
 ## [0.0.1-SNAPSHOT] - 2025-06-16
 ### Changed
