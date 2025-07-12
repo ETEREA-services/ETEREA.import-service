@@ -1,6 +1,6 @@
 package eterea.migration.api.rest.service;
 
-import eterea.migration.api.rest.kotlin.model.ProductTransaction;
+import eterea.migration.api.rest.model.ProductTransaction;
 import eterea.migration.api.rest.repository.ProductTransactionRepository;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;

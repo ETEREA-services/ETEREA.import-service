@@ -7,6 +7,13 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 
 ## [Unreleased]
 
+## [0.2.0] - 2025-07-12
+### Added
+- Mejorado el pipeline de CI/CD para construir y publicar automáticamente dos tipos de imágenes Docker: una nativa con GraalVM (`latest`) y una basada en JVM (`latest-jvm`).
+### Changed
+- Refactorización general y limpieza de código, eliminando dependencias y configuraciones de Kotlin que ya no estaban en uso.
+
+
 ## [0.1.1] - 2025-07-09
 ### Fixed
 - Corregido `NullPointerException` al procesar órdenes donde la información del pagador es nula.

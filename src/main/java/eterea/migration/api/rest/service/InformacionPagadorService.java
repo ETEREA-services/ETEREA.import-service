@@ -1,6 +1,6 @@
 package eterea.migration.api.rest.service;
 
-import eterea.migration.api.rest.kotlin.model.InformacionPagador;
+import eterea.migration.api.rest.model.InformacionPagador;
 import eterea.migration.api.rest.repository.InformacionPagadorRepository;
 import org.springframework.stereotype.Service;
 

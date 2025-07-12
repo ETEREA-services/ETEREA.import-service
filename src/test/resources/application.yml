@@ -1,0 +1,7 @@
+spring:
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+  # Use a different port for tests to avoid conflicts if the main app is running
+  server:
+    port: 8081

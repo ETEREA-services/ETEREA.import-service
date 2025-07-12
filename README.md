@@ -1,16 +1,15 @@
 # ETEREA.import-service
 
 [![ETEREA.import-service CI](https://github.com/ETEREA-services/ETEREA.import-service/actions/workflows/maven.yml/badge.svg?branch=main)](https://github.com/ETEREA-services/ETEREA.import-service/actions/workflows/maven.yml)
-[![Java](https://img.shields.io/badge/Java-21-blue.svg)](https://www.java.com)
+[![Java](https://img.shields.io/badge/Java-24-blue.svg)](https://www.java.com)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.3-green.svg)](https://spring.io/projects/spring-boot)
 [![Spring Cloud](https://img.shields.io/badge/Spring%20Cloud-2025.0.0-blue.svg)](https://spring.io/projects/spring-cloud)
-[![Kotlin](https://img.shields.io/badge/Kotlin-2.2.0-purple.svg)](https://kotlinlang.org)
 [![MySQL](https://img.shields.io/badge/MySQL-9.3.0-blue.svg)](https://www.mysql.com)
 [![OpenAPI](https://img.shields.io/badge/OpenAPI-2.8.9-green.svg)](https://www.openapis.org)
 
 ## Descripción
 
-Servicio de importación para el sistema ETEREA, desarrollado con Spring Boot y Kotlin. Este servicio se encarga de la gestión y procesamiento de importaciones de datos en el sistema.
+Servicio de importación para el sistema ETEREA, desarrollado con Spring Boot. Este servicio se encarga de la gestión y procesamiento de importaciones de datos en el sistema.
 
 ## Características Principales
 
@@ -26,7 +25,6 @@ Servicio de importación para el sistema ETEREA, desarrollado con Spring Boot y 
 - **Java 24**: Lenguaje base del proyecto
 - **Spring Boot 3.5.3**: Framework principal
 - **Spring Cloud 2025.0.0**: Para microservicios
-- **Kotlin 2.2.0**: Lenguaje adicional para desarrollo
 - **MySQL 9.3.0**: Base de datos
 - **Caffeine**: Caché en memoria
 - **Spring Security**: Seguridad y autenticación
@@ -70,3 +68,19 @@ El proyecto utiliza GitHub Actions para:
 ## Licencia
 
 Este proyecto está bajo la licencia [LICENSE](LICENSE).
+
+---
+
+## Imágenes Docker
+
+El pipeline de CI/CD de este proyecto construye y publica automáticamente dos versiones de la imagen Docker en Docker Hub, optimizadas para diferentes casos de uso:
+
+1.  **Imagen Nativa (GraalVM):**
+    - **Descripción:** Un ejecutable nativo compilado con GraalVM. Ofrece un arranque casi instantáneo y un consumo de memoria muy bajo.
+    - **Etiquetas:** `latest`, `<version>`, `<major>.<minor>`, `<commit-sha>`
+    - **Uso recomendado:** Entornos de producción, especialmente en arquitecturas de microservicios, serverless o donde la eficiencia de recursos es crítica.
+
+2.  **Imagen JVM:**
+    - **Descripci��n:** Una imagen tradicional basada en una Java Virtual Machine (JVM). Es robusta y universalmente compatible.
+    - **Etiquetas:** `latest-jvm`, `<version>-jvm`, `<major>.<minor>-jvm`, `<commit-sha>-jvm`
+    - **Uso recomendado:** Desarrollo, depuración o entornos donde no se requiere el máximo rendimiento de arranque.

@@ -1,7 +1,7 @@
 package eterea.migration.api.rest.controller;
 
 import eterea.migration.api.rest.exception.OrderNoteException;
-import eterea.migration.api.rest.kotlin.model.OrderNote;
+import eterea.migration.api.rest.model.OrderNote;
 import eterea.migration.api.rest.service.OrderNoteService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
