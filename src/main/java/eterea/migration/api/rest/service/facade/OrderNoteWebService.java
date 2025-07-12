@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import eterea.migration.api.rest.exception.ProductException;
 import eterea.migration.api.rest.extern.*;
-import eterea.migration.api.rest.kotlin.model.*;
+import eterea.migration.api.rest.model.*;
 import eterea.migration.api.rest.service.*;
 import eterea.migration.api.rest.service.internal.FileService;
 import lombok.extern.slf4j.Slf4j;

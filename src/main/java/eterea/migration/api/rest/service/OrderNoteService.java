@@ -3,7 +3,7 @@ package eterea.migration.api.rest.service;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.json.JsonMapper;
 import eterea.migration.api.rest.exception.OrderNoteException;
-import eterea.migration.api.rest.kotlin.model.OrderNote;
+import eterea.migration.api.rest.model.OrderNote;
 import eterea.migration.api.rest.repository.OrderNoteRepository;
 import eterea.migration.api.rest.service.internal.StringUtils;
 import lombok.extern.slf4j.Slf4j;

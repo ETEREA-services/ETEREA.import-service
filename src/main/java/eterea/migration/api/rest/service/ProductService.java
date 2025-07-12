@@ -1,7 +1,7 @@
 package eterea.migration.api.rest.service;
 
 import eterea.migration.api.rest.exception.ProductException;
-import eterea.migration.api.rest.kotlin.model.Product;
+import eterea.migration.api.rest.model.Product;
 import eterea.migration.api.rest.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

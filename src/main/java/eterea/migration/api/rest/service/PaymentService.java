@@ -1,6 +1,6 @@
 package eterea.migration.api.rest.service;
 
-import eterea.migration.api.rest.kotlin.model.Payment;
+import eterea.migration.api.rest.model.Payment;
 import eterea.migration.api.rest.repository.PaymentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
