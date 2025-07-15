@@ -7,6 +7,12 @@
 [![MySQL](https://img.shields.io/badge/MySQL-9.3.0-blue.svg)](https://www.mysql.com)
 [![OpenAPI](https://img.shields.io/badge/OpenAPI-2.8.9-green.svg)](https://www.openapis.org)
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ETEREA-services_ETEREA.import-service&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ETEREA-services_ETEREA.import-service)
+
+[![Quality gate](https://sonarcloud.io/api/project_badges/quality_gate?project=ETEREA-services_ETEREA.import-service)](https://sonarcloud.io/summary/new_code?id=ETEREA-services_ETEREA.import-service)
+
+[![SonarQube Cloud](https://sonarcloud.io/images/project_badges/sonarcloud-light.svg)](https://sonarcloud.io/summary/new_code?id=ETEREA-services_ETEREA.import-service)
+
 ## Descripción
 
 Servicio de importación para el sistema ETEREA, desarrollado con Spring Boot. Este servicio se encarga de la gestión y procesamiento de importaciones de datos en el sistema.
