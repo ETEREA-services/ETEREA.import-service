@@ -13,24 +13,17 @@ Servicio de importación para el sistema ETEREA, desarrollado con Spring Boot. E
 
 ## Características Principales
 
-- Procesamiento de importaciones de datos
-- Integración con servicios externos vía SFTP
-- Caché de alto rendimiento con Caffeine
-- Documentación de API con OpenAPI/Swagger
-- Integración con Eureka para service discovery
-- Seguridad implementada con Spring Security
+**Imágenes Docker solo para JVM estándar (se elimina soporte GraalVM Native)**
 
 ## Tecnologías Utilizadas
 
 - **Java 24**: Lenguaje base del proyecto
+El servicio se configura mediante el archivo `bootstrap.yml`. Las principales configuraciones incluyen:
 - **Spring Boot 3.5.3**: Framework principal
 - **Spring Cloud 2025.0.0**: Para microservicios
 - **MySQL 9.3.0**: Base de datos
 - **Caffeine**: Caché en memoria
-- **Spring Security**: Seguridad y autenticación
-- **OpenAPI 2.8.9**: Documentación de API
-- **JSch 0.1.55**: Cliente SFTP
-
+El pipeline de CI/CD construye y publica automáticamente una imagen Docker estándar basada en JVM. El soporte para imágenes nativas GraalVM ha sido eliminado a partir de la versión 1.0.0.
 ## Documentación
 
 - [Documentación de API](https://eterea-services.github.io/ETEREA.import-service/)
