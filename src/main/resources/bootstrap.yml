@@ -1,7 +1,9 @@
 app:
   port: ${APP_PORT:8280}
-  eureka: 8761
   logging: debug
+  consul:
+    host: consul-service
+    port: 8500
   server: 10.147.20.25:3306
   database: tsa.agencia.migracion
   user: root
@@ -15,18 +17,16 @@ app:
 server:
   port: ${app.port}
 
-eureka:
-  instance:
-    prefer-ip-address: true
-  client:
-    fetch-registry: true
-    register-with-eureka: true
-    service-url:
-      defaultZone: http://eureka:@eureka-service:${app.eureka}/eureka
-
 spring:
   application:
     name: import-service
+  cloud:
+    consul:
+      host: ${app.consul.host}
+      port: ${app.consul.port}
+      discovery:
+        prefer-ip-address: true
+        tags: eterea,import
   datasource:
     url: jdbc:mysql://${app.server}/${app.database}?useSSL=false&serverTimezone=UTC
     username: ${app.user}

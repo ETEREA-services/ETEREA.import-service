@@ -6,6 +6,25 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/en/1.0.
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [2.0.0] - 2025-07-24
+### Changed
+- Se reemplaza el descubrimiento de servicios de Eureka por Consul en la configuración (`bootstrap.yml`) y dependencias (`pom.xml`).
+- Se actualiza el nombre del proyecto a mayúsculas en `pom.xml`.
+- Se agrega la dependencia `spring-boot-starter-actuator`.
+- Se agregan `commons-lang3` y `httpclient` en `dependencyManagement`.
+- Se instala `curl` en la imagen Docker principal.
+
+### Removed
+- Eliminados todos los modelos y archivos relacionados escritos en Kotlin.
+- Eliminada la anotación `@EnableDiscoveryClient` y dependencias de Eureka.
+- Eliminado el archivo `Dockerfile.local`.
+
+### Added
+- Nuevos tests unitarios en Java para controladores y repositorios.
+- Nueva utilidad `StringUtils.java` para normalización de cadenas.
+
+> _Fuente: análisis de `git diff HEAD`, historial de commits y cambios en `pom.xml` y `bootstrap.yml`._
+
 ## [1.0.0] - 2025-07-15
 ### Removed
 - Eliminado el soporte para GraalVM Native Image: se eliminaron los Dockerfiles y perfiles relacionados (`Dockerfile.graalvm`, `Dockerfile.jvm`, perfil `native` en `pom.xml`, clase `NativeRuntimeHints.java`).

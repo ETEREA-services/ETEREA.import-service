@@ -17,19 +17,23 @@
 
 Servicio de importación para el sistema ETEREA, desarrollado con Spring Boot. Este servicio se encarga de la gestión y procesamiento de importaciones de datos en el sistema.
 
+
 ## Características Principales
 
-**Imágenes Docker solo para JVM estándar (se elimina soporte GraalVM Native)**
+- Descubrimiento de servicios ahora basado en **Consul** (antes Eureka).
+- Imágenes Docker solo para JVM estándar (se elimina soporte GraalVM Native).
+- Utilidades de normalización de cadenas y nuevos tests en Java.
 
 ## Tecnologías Utilizadas
 
 - **Java 24**: Lenguaje base del proyecto
-El servicio se configura mediante el archivo `bootstrap.yml`. Las principales configuraciones incluyen:
 - **Spring Boot 3.5.3**: Framework principal
-- **Spring Cloud 2025.0.0**: Para microservicios
+- **Spring Cloud 2025.0.0**: Para microservicios (ahora con Consul)
 - **MySQL 9.3.0**: Base de datos
 - **Caffeine**: Caché en memoria
-El pipeline de CI/CD construye y publica automáticamente una imagen Docker estándar basada en JVM. El soporte para imágenes nativas GraalVM ha sido eliminado a partir de la versión 1.0.0.
+
+El pipeline de CI/CD construye y publica automáticamente una imagen Docker estándar basada en JVM.
+
 ## Documentación
 
 - [Documentación de API](https://eterea-services.github.io/ETEREA.import-service/)
@@ -42,7 +46,7 @@ El pipeline de CI/CD construye y publica automáticamente una imagen Docker est�
 El servicio se configura mediante el archivo `bootstrap.yml`. Las principales configuraciones incluyen:
 
 - Puerto de la aplicación (por defecto: 8280)
-- Configuración de Eureka (puerto: 8761)
+- Configuración de Consul (host y puerto)
 - Configuración de la base de datos MySQL
 - Configuración de SFTP
 - Configuración de logging
