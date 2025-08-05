@@ -9,6 +9,7 @@ import eterea.migration.api.rest.service.internal.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -28,14 +29,22 @@ public class OrderNoteService {
     }
 
     public List<OrderNote> findAllCompletedByLastTwoDays() {
-        OffsetDateTime completedDate = OffsetDateTime.now().minusDays(1);
+        OffsetDateTime completedDate = OffsetDateTime.now().minusDays(2);
         var completed_status = Arrays.asList("Completado", "Completed");
         return repository.findAllByOrderStatusInAndCompletedDateGreaterThanEqual(completed_status, completedDate);
     }
 
     public OrderNote findLastByNumeroDocumento(Long numeroDocumento) {
-        var orderNote = repository.findTopByBillingDniPasaporteOrderByOrderNumberIdDesc(String.valueOf(numeroDocumento)).orElseThrow(() -> new OrderNoteException(numeroDocumento));
-        logOrderNote(orderNote);
+        log.debug("Processing OrderNoteService.findLastByNumeroDocumento");
+        var orderNote = repository.findTopByBillingDniPasaporteOrderByOrderNumberIdDesc(String.valueOf(numeroDocumento)).orElseThrow(() -> new OrderNoteException(numeroDocumento, BigDecimal.ZERO));
+        log.debug("OrderNote -> {}", orderNote.jsonify());
+        return orderNote;
+    }
+
+    public OrderNote findLastByNumeroDocumentoAndImporte(Long numeroDocumento, BigDecimal importe) {
+        log.debug("Processing OrderNoteService.findLastByNumeroDocumentoAndImporte");
+        var orderNote = repository.findTopByBillingDniPasaporteContainsAndOrderTotalOrderByOrderNumberIdDesc(String.valueOf(numeroDocumento), importe).orElseThrow(() -> new OrderNoteException(numeroDocumento, importe));
+        log.debug("OrderNote -> {}", orderNote.jsonify());
         return orderNote;
     }
 
@@ -112,19 +121,6 @@ public class OrderNoteService {
         orderNote.setPaymentMethodTitle(StringUtils.stripDiacritics(orderNote.getPaymentMethodTitle()));
         orderNote.setShippingMethodTitle(StringUtils.stripDiacritics(orderNote.getShippingMethodTitle()));
         orderNote.setOrderNotes(StringUtils.stripDiacritics(orderNote.getOrderNotes()));
-    }
-
-    private void logOrderNote(OrderNote orderNote) {
-        try {
-            log.debug("OrderNote -> {}", JsonMapper
-                    .builder()
-                    .findAndAddModules()
-                    .build()
-                    .writerWithDefaultPrettyPrinter()
-                    .writeValueAsString(orderNote));
-        } catch (JsonProcessingException e) {
-            log.debug("OrderNote jsonify error -> {}", e.getMessage());
-        }
     }
 
 }

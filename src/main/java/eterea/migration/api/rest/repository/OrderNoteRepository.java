@@ -4,6 +4,7 @@ import eterea.migration.api.rest.model.OrderNote;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -14,6 +15,8 @@ public interface OrderNoteRepository extends JpaRepository<OrderNote, Long> {
     Optional<OrderNote> findByOrderNumberId(Long orderNumberId);
 
     Optional<OrderNote> findTopByBillingDniPasaporteOrderByOrderNumberIdDesc(String billingDniPasaporte);
+
+    Optional<OrderNote> findTopByBillingDniPasaporteContainsAndOrderTotalOrderByOrderNumberIdDesc(String billingDniPasaporte, BigDecimal orderTotal);
 
     List<OrderNote> findAllByOrderStatusAndCompletedDateGreaterThanEqual(String completado, OffsetDateTime completedDate);
 

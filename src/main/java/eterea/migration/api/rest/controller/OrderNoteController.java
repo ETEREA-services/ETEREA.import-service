@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -38,6 +39,14 @@ public class OrderNoteController {
         }
     }
 
+    @GetMapping("/documento/last/{numeroDocumento}/importe/{importe}")
+    public ResponseEntity<OrderNote> findLastByNumeroDocumentoAndImporte(@PathVariable Long numeroDocumento, @PathVariable BigDecimal importe) {
+        try {
+            return ResponseEntity.ok(service.findLastByNumeroDocumentoAndImporte(numeroDocumento, importe));
+        } catch (OrderNoteException e) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, e.getMessage());
+        }
+    }
 
     @GetMapping("/lastTwoDays")
     public ResponseEntity<List<OrderNote>> findAllCompletedByLastTwoDays() {

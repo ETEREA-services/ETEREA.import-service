@@ -1,6 +1,8 @@
 package eterea.migration.api.rest.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,12 +13,11 @@ import java.math.BigDecimal;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = true)
 @Data
+@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Entity
-@Table
+@EqualsAndHashCode(callSuper = true)
 public class OrderNote extends Auditable {
 
     @Id
@@ -82,4 +83,18 @@ public class OrderNote extends Auditable {
     @OneToOne
     @JoinColumn(name = "orderNumberId", insertable = false, updatable = false)
     private Payment payment;
+
+    public String jsonify() {
+        try {
+            return JsonMapper
+                    .builder()
+                    .findAndAddModules()
+                    .build()
+                    .writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(this);
+        } catch (JsonProcessingException e) {
+            return "jsonify error " + e.getMessage();
+        }
+    }
+
 }

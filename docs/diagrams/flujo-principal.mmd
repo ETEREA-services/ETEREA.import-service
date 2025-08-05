@@ -1,19 +1,12 @@
-
 sequenceDiagram
-    participant User
-    participant WordPressController
-    participant OrderNoteWebService
-    participant OrderNoteService
-    participant OrderNoteRepository
-    participant WordPressAPI
+    participant Cliente
+    participant API
+    participant ServicioOrderNote
+    participant RepositorioOrderNote
 
-    User->>WordPressController: POST /api/v1/wordpress/notes
-    WordPressController->>OrderNoteWebService: importFromWordPress()
-    OrderNoteWebService->>WordPressAPI: GET /wp-json/wc/v3/orders
-    WordPressAPI-->>OrderNoteWebService: Order Data
-    OrderNoteWebService->>OrderNoteService: saveOrderNote(order)
-    OrderNoteService->>OrderNoteRepository: save(orderNote)
-    OrderNoteRepository-->>OrderNoteService: Saved OrderNote
-    OrderNoteService-->>OrderNoteWebService: Result
-    OrderNoteWebService-->>WordPressController: Import Status
-    WordPressController-->>User: 200 OK
+    Cliente->>API: GET /documento/last/{numeroDocumento}/importe/{importe}
+    API->>ServicioOrderNote: findLastByNumeroDocumentoAndImporte
+    ServicioOrderNote->>RepositorioOrderNote: findTopByBillingDniPasaporteContainsAndOrderTotalOrderByOrderNumberIdDesc
+    RepositorioOrderNote-->>ServicioOrderNote: OrderNote
+    ServicioOrderNote-->>API: OrderNote
+    API-->>Cliente: OrderNote (JSON)
