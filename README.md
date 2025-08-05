@@ -20,17 +20,45 @@ Servicio de importación para el sistema ETEREA, desarrollado con Spring Boot. E
 
 ## Características Principales
 
-- Descubrimiento de servicios ahora basado en **Consul** (antes Eureka).
-- Imágenes Docker solo para JVM estándar (se elimina soporte GraalVM Native).
-- Utilidades de normalización de cadenas y nuevos tests en Java.
 
+# Cambios en la versión 1.1.0
+
+- Nuevo endpoint: `/documento/last/{numeroDocumento}/importe/{importe}` para búsqueda avanzada de OrderNote.
+- Seguridad básica habilitada con Spring Security.
+- Dependencias actualizadas: Spring Boot 3.5.4, MySQL Connector 9.4.0.
+- Nuevos tests unitarios y de integración.
+- Eliminación de soporte y código Kotlin.
+- Configuración de arranque revisada (`bootstrap.yml`).
+
+# Instalación
+
+```bash
+mvn clean install
+```
+
+# Ejecución
+
+```bash
+mvn spring-boot:run
+```
+
+# Documentación automática
+
+La documentación OpenAPI se genera automáticamente y está disponible en `/swagger-ui.html` tras iniciar el servicio.
+
+# Diagramas actualizados
+
+Los diagramas de arquitectura y flujo se encuentran en `docs/diagrams/`.  Verifica que los endpoints y entidades reflejados en los diagramas coincidan con la nueva funcionalidad.
+
+# Contribución
+
+Verifica los tests antes de enviar PRs.
+```
+mvn test
+```
 ## Tecnologías Utilizadas
 
 - **Java 24**: Lenguaje base del proyecto
-- **Spring Boot 3.5.3**: Framework principal
-- **Spring Cloud 2025.0.0**: Para microservicios (ahora con Consul)
-- **MySQL 9.3.0**: Base de datos
-- **Caffeine**: Caché en memoria
 
 El pipeline de CI/CD construye y publica automáticamente una imagen Docker estándar basada en JVM.
 

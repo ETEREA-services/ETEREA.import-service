@@ -26,12 +26,6 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 > _Fuente: análisis de `git diff HEAD`, historial de commits y cambios en `pom.xml` y `bootstrap.yml`._
 
 ## [1.0.0] - 2025-07-15
-### Removed
-- Eliminado el soporte para GraalVM Native Image: se eliminaron los Dockerfiles y perfiles relacionados (`Dockerfile.graalvm`, `Dockerfile.jvm`, perfil `native` en `pom.xml`, clase `NativeRuntimeHints.java`).
-- Eliminado el pipeline de CI/CD para imágenes nativas; ahora solo se construye y publica una imagen JVM estándar.
-
-### Changed
-- Refactorización de la configuración: `application.yml` se renombra y centraliza como `bootstrap.yml`.
 - Limpieza y simplificación de la clase principal `EtereaMigrationApplication`.
 - Unificación y simplificación de los Dockerfiles (`Dockerfile`, `Dockerfile.local`).
 - Eliminadas dependencias y plugins no necesarios (devtools, soporte nativo).

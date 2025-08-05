@@ -105,7 +105,7 @@ public class OrderNoteWebService {
                         orderNoteWeb.getBillingFirstName(),
                         orderNoteWeb.getBillingLastName(),
                         orderNoteWeb.getBillingFullName(),
-                        orderNoteWeb.getBillingDniPasaporte(),
+                        orderNoteWeb.getBillingDniPasaporte() != null ? orderNoteWeb.getBillingDniPasaporte().replace(".", "") : null,
                         orderNoteWeb.getBillingAddress(),
                         orderNoteWeb.getBillingCity(),
                         orderNoteWeb.getBillingState(),
