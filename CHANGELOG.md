@@ -33,6 +33,13 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 ### Fixed
 - Mejoras menores de robustez y limpieza de código.
 
+## [1.0.1] - 2025-09-21
+### Changed
+- Actualización de dependencias: Spring Boot 3.5.6, springdoc-openapi 2.8.10.
+- Refactorización de servicios para usar @RequiredArgsConstructor de Lombok en lugar de constructores @Autowired.
+
+> Fuente: análisis de `git diff HEAD`, `pom.xml` y cambios en `PaymentService.java` y `OrderNoteWebService.java`.
+
 ## [Unreleased]
 
 ## [0.2.0] - 2025-07-12

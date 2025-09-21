@@ -8,6 +8,7 @@ import eterea.migration.api.rest.extern.*;
 import eterea.migration.api.rest.model.*;
 import eterea.migration.api.rest.service.*;
 import eterea.migration.api.rest.service.internal.FileService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +24,7 @@ import java.util.List;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class OrderNoteWebService {
 
     private final FileService fileService;
@@ -31,15 +33,6 @@ public class OrderNoteWebService {
     private final PaymentService paymentService;
     private final InformacionPagadorService informacionPagadorService;
     private final ProductTransactionService productTransactionService;
-
-    public OrderNoteWebService(FileService fileService, OrderNoteService orderNoteService, ProductService productService, PaymentService paymentService, InformacionPagadorService informacionPagadorService, ProductTransactionService productTransactionService) {
-        this.fileService = fileService;
-        this.orderNoteService = orderNoteService;
-        this.productService = productService;
-        this.paymentService = paymentService;
-        this.informacionPagadorService = informacionPagadorService;
-        this.productTransactionService = productTransactionService;
-    }
 
     public List<OrderNoteWeb> capture() {
         log.info("Capturing orders...");
