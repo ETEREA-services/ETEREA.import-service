@@ -2,10 +2,10 @@
 
 [![ETEREA.import-service CI](https://github.com/ETEREA-services/ETEREA.import-service/actions/workflows/maven.yml/badge.svg?branch=main)](https://github.com/ETEREA-services/ETEREA.import-service/actions/workflows/maven.yml)
 [![Java](https://img.shields.io/badge/Java-24-blue.svg)](https://www.java.com)
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.3-green.svg)](https://spring.io/projects/spring-boot)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.6-green.svg)](https://spring.io/projects/spring-boot)
 [![Spring Cloud](https://img.shields.io/badge/Spring%20Cloud-2025.0.0-blue.svg)](https://spring.io/projects/spring-cloud)
 [![MySQL](https://img.shields.io/badge/MySQL-9.3.0-blue.svg)](https://www.mysql.com)
-[![OpenAPI](https://img.shields.io/badge/OpenAPI-2.8.9-green.svg)](https://www.openapis.org)
+[![OpenAPI](https://img.shields.io/badge/OpenAPI-2.8.10-green.svg)](https://www.openapis.org)
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ETEREA-services_ETEREA.import-service&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ETEREA-services_ETEREA.import-service)
 
@@ -20,15 +20,6 @@ Servicio de importación para el sistema ETEREA, desarrollado con Spring Boot. E
 
 ## Características Principales
 
-
-# Cambios en la versión 1.1.0
-
-- Nuevo endpoint: `/documento/last/{numeroDocumento}/importe/{importe}` para búsqueda avanzada de OrderNote.
-- Seguridad básica habilitada con Spring Security.
-- Dependencias actualizadas: Spring Boot 3.5.4, MySQL Connector 9.4.0.
-- Nuevos tests unitarios y de integración.
-- Eliminación de soporte y código Kotlin.
-- Configuración de arranque revisada (`bootstrap.yml`).
 
 # Instalación
 
