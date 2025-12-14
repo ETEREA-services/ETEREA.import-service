@@ -13,6 +13,17 @@ app:
   ftp-password: pwd
   hours-offset: 1
   local-path: /tmp/
+  wordpress:
+    site1:
+      name: hoteltermascacheuta
+      base-url: ${WORDPRESS_SITE1_BASE_URL:https://hoteltermascacheuta.com/wp-json/custom-orders/v1/orders}
+      username: ${WORDPRESS_SITE1_USERNAME}
+      password: ${WORDPRESS_SITE1_PASSWORD}
+    site2:
+      name: termascacheuta
+      base-url: ${WORDPRESS_SITE2_BASE_URL:https://termascacheuta.com/wp-json/custom-orders/v1/orders}
+      username: ${WORDPRESS_SITE2_USERNAME}
+      password: ${WORDPRESS_SITE2_PASSWORD}
 
 server:
   port: ${app.port}
