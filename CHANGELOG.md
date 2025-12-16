@@ -6,6 +6,19 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/en/1.0.
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [Unreleased]
+### Added
+- Nueva clase `WordPressApiClient` para comunicarse con REST API de Wordpress.
+- Nueva clase `WordPressClientConfig` para crear dos instancias de `WordPressApiClient` con configuración independiente desde `bootstrap.yml`.
+- Soporte para múltiples sitios WordPress simultáneamente.
+- Nuevo endpoint `GET /api/wordpress/capture/from-apis` para capturar órdenes desde APIs de WordPress con filtrado por rango de fechas.
+- Soporte para extracción de pagos desde "PlusPago" y "MacroClick" en order_notes.
+- Nuevo metodo `captureFromApi()` en `OrderNoteWebService` para capturar órdenes combinadas de ambos sitios.
+- Nuevo metodo `@Scheduled` llamado `captureFromApisLastTwelveHours()` para capturar órdenes de las últimas 12 horas cada 10 minutos.
+
+### Changed
+- Reemplazado `@RequiredArgsConstructor` por constructor explícito en `OrderNoteWebService` para inyección con `@Qualifier` de múltiples clientes WordPress.
+
 ## [2.0.0] - 2025-07-24
 ### Changed
 - Se reemplaza el descubrimiento de servicios de Eureka por Consul en la configuración (`bootstrap.yml`) y dependencias (`pom.xml`).
@@ -39,8 +52,6 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 - Refactorización de servicios para usar @RequiredArgsConstructor de Lombok en lugar de constructores @Autowired.
 
 > Fuente: análisis de `git diff HEAD`, `pom.xml` y cambios en `PaymentService.java` y `OrderNoteWebService.java`.
-
-## [Unreleased]
 
 ## [0.2.0] - 2025-07-12
 ### Added
