@@ -12,4 +12,8 @@ public class OrderNoteException extends RuntimeException {
         super("Cannot find OrderNote by numeroDocumento " + numeroDocumento + " and importe " + importe);
     }
 
+    public OrderNoteException(String message) {
+        super(message);
+    }
+
 }
