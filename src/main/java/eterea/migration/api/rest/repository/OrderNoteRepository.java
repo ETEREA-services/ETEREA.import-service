@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -22,4 +23,7 @@ public interface OrderNoteRepository extends JpaRepository<OrderNote, Long> {
 
     List<OrderNote> findAllByOrderStatusInAndCompletedDateGreaterThanEqual(List<String> orderStatus, OffsetDateTime completedDate);
 
+    Optional<OrderNote> findTopByOrderByCreatedDesc();
+
+    int countByCreatedBetween(LocalDateTime start, LocalDateTime end);
 }

@@ -8,6 +8,13 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 
 ## [Unreleased]
 ### Added
+- Nuevo DTO `ServiceStatusDto` para representar el estado del servicio.
+- Nuevo endpoint `GET /service-status` para obtener el estado del servicio con información de última actualización.
+- Nuevo método `getServiceStatus()` en `OrderNoteService` que calcula estadísticas de la última hora de órdenes.
+- Nuevo método `countByCreatedBetween()` en `OrderNoteRepository` para contar órdenes en un rango de tiempo.
+
+## [2.0.1] - 2025-12-15
+### Added
 - Nueva clase `WordPressApiClient` para comunicarse con REST API de Wordpress.
 - Nueva clase `WordPressClientConfig` para crear dos instancias de `WordPressApiClient` con configuración independiente desde `bootstrap.yml`.
 - Soporte para múltiples sitios WordPress simultáneamente.

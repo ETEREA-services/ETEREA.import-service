@@ -1,5 +1,6 @@
 package eterea.migration.api.rest.controller;
 
+import eterea.migration.api.dto.ServiceStatusDto;
 import eterea.migration.api.rest.exception.OrderNoteException;
 import eterea.migration.api.rest.model.OrderNote;
 import eterea.migration.api.rest.service.OrderNoteService;
@@ -53,4 +54,13 @@ public class OrderNoteController {
         return new ResponseEntity<>(service.findAllCompletedByLastTwoDays(), HttpStatus.OK);
     }
 
+    @GetMapping("/last")
+    public ResponseEntity<OrderNote> findLast() {
+        return new ResponseEntity<>(service.findLast(), HttpStatus.OK);
+    }
+
+    @GetMapping("/service-status")
+    public ResponseEntity<ServiceStatusDto> getServiceStatus() {
+        return new ResponseEntity<>(service.getServiceStatus(), HttpStatus.OK);
+    }
 }
