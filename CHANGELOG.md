@@ -53,6 +53,17 @@ y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.h
 ### Fixed
 - Mejoras menores de robustez y limpieza de código.
 
+## [2.0.0] - 2026-01-06
+### Changed
+- Actualización a Spring Boot 4.0.1, incluyendo cambios en dependencias de test (@WebMvcTest, @MockBean -> @MockitoBean, etc.).
+- Actualización de JDK a 25.
+- Actualización de dependencias: Spring Cloud 2025.1.0, MySQL Connector 9.5.0, SpringDoc OpenAPI 3.0.1, commons-lang3 3.20.0.
+- Refactorización en FileService: agregado timeout para conexiones SFTP, uso de @RequiredArgsConstructor.
+- Cambio en frecuencia de scheduling en WordPressController: de cada hora a cada 30 minutos.
+- Actualizaciones en Dockerfile y CI/CD para JDK 25.
+
+> Fuente: análisis de `git diff HEAD`, `pom.xml`, `Dockerfile`, `.github/workflows/maven.yml`, y cambios en código fuente.
+
 ## [1.0.1] - 2025-09-21
 ### Changed
 - Actualización de dependencias: Spring Boot 3.5.6, springdoc-openapi 2.8.10.

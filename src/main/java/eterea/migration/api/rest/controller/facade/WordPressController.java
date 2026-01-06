@@ -27,7 +27,7 @@ public class WordPressController {
    }
 
    @GetMapping("/capture")
-   @Scheduled(cron = "0 0 * * * *")
+   @Scheduled(cron = "0 0/30 * * * ?")
    public ResponseEntity<List<OrderNoteWeb>> capture() {
       return new ResponseEntity<>(service.capture(), HttpStatus.OK);
    }
