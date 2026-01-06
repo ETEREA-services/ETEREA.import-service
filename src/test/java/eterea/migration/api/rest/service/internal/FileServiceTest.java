@@ -33,6 +33,7 @@ class FileServiceTest {
         when(environment.getProperty("app.ftp-user")).thenReturn("testuser");
         when(environment.getProperty("app.ftp-password")).thenReturn("password");
         when(environment.getProperty("app.local-path")).thenReturn("/tmp/");
+        when(environment.getProperty("app.ftp-timeout")).thenReturn("5000");
 
         // This is the modern way to mock constructor calls with Mockito-inline
         try (MockedConstruction<JSch> mockedJsch = mockConstruction(JSch.class,
@@ -54,8 +55,8 @@ class FileServiceTest {
             Session sessionInstance = jschInstance.getSession("testuser", "localhost", 22);
             ChannelSftp channelInstance = (ChannelSftp) sessionInstance.openChannel("sftp");
 
-            verify(sessionInstance, times(1)).connect();
-            verify(channelInstance, times(1)).connect();
+            verify(sessionInstance, times(1)).connect(5000);
+            verify(channelInstance, times(1)).connect(5000);
             verify(channelInstance, times(1)).get(anyString(), anyString());
             verify(channelInstance, times(1)).exit();
             verify(sessionInstance, times(1)).disconnect();

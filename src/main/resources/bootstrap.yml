@@ -11,6 +11,7 @@ app:
   ftp-host: 127.0.0.1
   ftp-user: ftp-uid
   ftp-password: pwd
+  ftp-timeout: 60000
   hours-offset: 1
   local-path: /tmp/
   wordpress:

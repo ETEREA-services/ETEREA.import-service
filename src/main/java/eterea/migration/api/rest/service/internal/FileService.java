@@ -1,8 +1,8 @@
 package eterea.migration.api.rest.service.internal;
 
 import com.jcraft.jsch.*;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Service;
 
@@ -11,14 +11,10 @@ import java.util.Objects;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class FileService {
 
     private final Environment environment;
-
-    @Autowired
-    public FileService(Environment environment) {
-        this.environment = environment;
-    }
 
     public String getFile() {
 
@@ -34,6 +30,7 @@ public class FileService {
         int ftpPort = 22;
         String ftpUser = environment.getProperty("app.ftp-user");
         String ftpPassword = environment.getProperty("app.ftp-password");
+        int ftpTimeout = Integer.parseInt(Objects.requireNonNull(environment.getProperty("app.ftp-timeout")));
         String remoteFilePath = "/home/ftp-agencia/" + filename;
         filename = environment.getProperty("app.local-path") + filename;
 
@@ -47,10 +44,10 @@ public class FileService {
             config.put("StrictHostKeyChecking", "no");
             session.setConfig(config);
 
-            session.connect();
+            session.connect(ftpTimeout);
 
             Channel channel = session.openChannel("sftp");
-            channel.connect();
+            channel.connect(ftpTimeout);
 
             ChannelSftp sftpChannel = (ChannelSftp) channel;
             sftpChannel.get(remoteFilePath, filename);
