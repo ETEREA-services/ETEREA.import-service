@@ -6,12 +6,19 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/en/1.0.
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [Unreleased]
+## [2.1.0] - 2026-02-14
+### Changed
+- Refactorización de paquetes: `eterea.migration.api.rest.*` → `eterea.migration.rest.*` para mejor organización del código.
+- Actualización de Spring Boot 4.0.1 → 4.0.2.
+- Mejora en el procesamiento de DNIs: uso de `ToolService.onlyNumbers()` en lugar de simple replace para limpieza de caracteres no numéricos.
+- Modernización del código: uso de `@RequiredArgsConstructor` de Lombok y palabra clave `var` en lugar de tipos explícitos.
+- Actualización de la clase principal en `pom.xml` para reflejar el nuevo paquete.
+
 ### Added
-- Nuevo DTO `ServiceStatusDto` para representar el estado del servicio.
-- Nuevo endpoint `GET /service-status` para obtener el estado del servicio con información de última actualización.
-- Nuevo método `getServiceStatus()` en `OrderNoteService` que calcula estadísticas de la última hora de órdenes.
-- Nuevo método `countByCreatedBetween()` en `OrderNoteRepository` para contar órdenes en un rango de tiempo.
+- Nueva clase `ToolService.java` con utilidades para conversión de fechas, números a texto, y manipulación de cadenas.
+- Nueva clase `Jsonifier.java` para serialización JSON con soporte para pretty-print.
+
+> _Fuente: análisis de `git diff HEAD`, historial de commits y cambios en código fuente._
 
 ## [2.0.1] - 2025-12-15
 ### Added
