@@ -1,0 +1,40 @@
+package eterea.migration.rest.repository;
+
+import eterea.migration.rest.configuration.EtereaMigrationConfiguration;
+import eterea.migration.rest.model.Product;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
+import org.springframework.boot.jpa.test.autoconfigure.TestEntityManager;
+import org.springframework.context.annotation.Import;
+
+import java.util.Optional;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@DataJpaTest
+@Import(EtereaMigrationConfiguration.class)
+class ProductRepositoryTest {
+
+    @Autowired
+    private TestEntityManager entityManager;
+
+    @Autowired
+    private ProductRepository productRepository;
+
+    @Test
+    void whenFindById_thenReturnProduct() {
+        // given
+        Product product = new Product();
+        product.setName("Test Product");
+        product.setSku("TEST-SKU-001");
+        Product savedProduct = entityManager.persistAndFlush(product);
+
+        // when
+        Optional<Product> found = productRepository.findById(savedProduct.getProductId());
+
+        // then
+        assertThat(found).isPresent();
+        assertThat(found.get().getName()).isEqualTo(product.getName());
+    }
+}
