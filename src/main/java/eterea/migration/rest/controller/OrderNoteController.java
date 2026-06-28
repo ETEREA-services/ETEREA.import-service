@@ -4,6 +4,7 @@ import eterea.migration.dto.ServiceStatusDto;
 import eterea.migration.rest.exception.OrderNoteException;
 import eterea.migration.rest.model.OrderNote;
 import eterea.migration.rest.service.OrderNoteService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,13 +15,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping({"/orderNote", "/api/import/orderNote"})
+@RequiredArgsConstructor
 public class OrderNoteController {
 
     private final OrderNoteService service;
-
-    public OrderNoteController(OrderNoteService service) {
-        this.service = service;
-    }
 
     @GetMapping("/{orderNumberId}")
     public ResponseEntity<OrderNote> findByOrderNumberId(@PathVariable Long orderNumberId) {

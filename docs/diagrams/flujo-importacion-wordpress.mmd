@@ -6,8 +6,8 @@ sequenceDiagram
     participant ON_Service as OrderNoteService
     participant ON_Repo as OrderNoteRepository
 
-    User->>+WP_Controller: POST /api/v1/wordpress/notes
-    WP_Controller->>+ON_WebService: importFromWordPress()
+    User->>+WP_Controller: GET /api/wordpress/capture/from-apis?from=&to=
+    WP_Controller->>+ON_WebService: captureFromApi(from, to)
     ON_WebService->>+WP_API: GET /wp-json/wc/v3/orders
     WP_API-->>-ON_WebService: Lista de Pedidos
     loop Por cada Pedido

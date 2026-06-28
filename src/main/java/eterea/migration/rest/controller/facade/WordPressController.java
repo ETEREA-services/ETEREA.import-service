@@ -3,6 +3,7 @@ package eterea.migration.rest.controller.facade;
 import eterea.migration.rest.extern.OrderNoteWeb;
 import eterea.migration.rest.service.facade.OrderNoteWebService;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,13 +19,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/wordpress")
+@RequiredArgsConstructor
 public class WordPressController {
 
    private final OrderNoteWebService service;
-
-   public WordPressController(OrderNoteWebService service) {
-      this.service = service;
-   }
 
    @GetMapping("/capture")
    @Scheduled(cron = "0 0/30 * * * ?")

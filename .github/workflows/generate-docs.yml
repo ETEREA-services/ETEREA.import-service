@@ -18,14 +18,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
-      - name: Set up JDK 24
-        uses: actions/setup-java@v4
+      - name: Set up JDK 25
+        uses: actions/setup-java@v5
         with:
-          java-version: '24'
+          java-version: '25'
           distribution: 'temurin'
           cache: maven
 
@@ -79,6 +79,9 @@ jobs:
               <div id="state-diagram" class="section"></div>
               <div id="erd-diagram" class="section"></div>
               <div id="error-flow-diagram" class="section"></div>
+              <div id="general-architecture" class="section"></div>
+              <div id="main-flow" class="section"></div>
+              <div id="entity-lifecycle" class="section"></div>
               <div id="deployment-diagram" class="section"></div>
               <div id="dependencies" class="section">
                   <h2>🌳 Grafo de Dependencias</h2>
@@ -168,6 +171,39 @@ jobs:
                       const errorContainer = document.getElementById('error-flow-diagram');
                       errorContainer.innerHTML = '<h2>⚠️ Diagrama de Secuencia: Manejo de Errores</h2><div class="mermaid">' + data + '</div>';
                       mermaid.init(undefined, errorContainer.querySelector('.mermaid'));
+                  });
+
+              // --- General Architecture Diagram ---
+              fetch('diagrams/arquitectura-general.mmd')
+                  .then(response => response.text())
+                  .then(data => {
+                      const archContainer = document.getElementById('general-architecture');
+                      if (archContainer) {
+                          archContainer.innerHTML = '<h2>🏗️ Arquitectura General del Sistema</h2><div class="mermaid">' + data + '</div>';
+                          mermaid.init(undefined, archContainer.querySelector('.mermaid'));
+                      }
+                  });
+
+              // --- Main Flow Diagram ---
+              fetch('diagrams/flujo-principal.mmd')
+                  .then(response => response.text())
+                  .then(data => {
+                      const flowContainer = document.getElementById('main-flow');
+                      if (flowContainer) {
+                          flowContainer.innerHTML = '<h2>📄 Diagrama de Flujo Principal: Búsqueda de OrderNote</h2><div class="mermaid">' + data + '</div>';
+                          mermaid.init(undefined, flowContainer.querySelector('.mermaid'));
+                      }
+                  });
+
+              // --- Entity Lifecycle Diagram ---
+              fetch('diagrams/ciclo-de-vida-entidad.mmd')
+                  .then(response => response.text())
+                  .then(data => {
+                      const lifecycleContainer = document.getElementById('entity-lifecycle');
+                      if (lifecycleContainer) {
+                          lifecycleContainer.innerHTML = '<h2>🔄 Ciclo de Vida de la Entidad</h2><div class="mermaid">' + data + '</div>';
+                          mermaid.init(undefined, lifecycleContainer.querySelector('.mermaid'));
+                      }
                   });
 
               // --- Deployment Diagram ---
@@ -268,7 +304,7 @@ jobs:
           fi
 
       - name: Upload artifacts
-        uses: actions/upload-pages-artifact@v3
+        uses: actions/upload-pages-artifact@v4
         with:
           path: docs
 
@@ -285,4 +321,5 @@ jobs:
     steps:
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v5
+

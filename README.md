@@ -2,10 +2,10 @@
 
 [![ETEREA.import-service CI](https://github.com/ETEREA-services/ETEREA.import-service/actions/workflows/maven.yml/badge.svg?branch=main)](https://github.com/ETEREA-services/ETEREA.import-service/actions/workflows/maven.yml)
 [![Java](https://img.shields.io/badge/Java-25-blue.svg)](https://www.java.com)
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.0.2-green.svg)](https://spring.io/projects/spring-boot)
-[![Spring Cloud](https://img.shields.io/badge/Spring%20Cloud-2025.1.0-blue.svg)](https://spring.io/projects/spring-cloud)
-[![MySQL](https://img.shields.io/badge/MySQL-9.5.0-blue.svg)](https://www.mysql.com)
-[![OpenAPI](https://img.shields.io/badge/OpenAPI-3.0.1-green.svg)](https://www.openapis.org)
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1.0-green.svg)](https://spring.io/projects/spring-boot)
+[![Spring Cloud](https://img.shields.io/badge/Spring%20Cloud-2025.1.2-blue.svg)](https://spring.io/projects/spring-cloud)
+[![MySQL](https://img.shields.io/badge/MySQL-9.7.0-blue.svg)](https://www.mysql.com)
+[![OpenAPI](https://img.shields.io/badge/OpenAPI-3.0.3-green.svg)](https://www.openapis.org)
 
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=ETEREA-services_ETEREA.import-service&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=ETEREA-services_ETEREA.import-service)
 
@@ -93,16 +93,10 @@ Este proyecto está bajo la licencia [LICENSE](LICENSE).
 
 ---
 
-## Imágenes Docker
+## Imagen Docker
 
-El pipeline de CI/CD de este proyecto construye y publica automáticamente dos versiones de la imagen Docker en Docker Hub, optimizadas para diferentes casos de uso:
+El pipeline de CI/CD construye y publica automáticamente una imagen Docker basada en JVM en Docker Hub.
 
-1.  **Imagen Nativa (GraalVM):**
-    - **Descripción:** Un ejecutable nativo compilado con GraalVM. Ofrece un arranque casi instantáneo y un consumo de memoria muy bajo.
-    - **Etiquetas:** `latest`, `<version>`, `<major>.<minor>`, `<commit-sha>`
-    - **Uso recomendado:** Entornos de producción, especialmente en arquitecturas de microservicios, serverless o donde la eficiencia de recursos es crítica.
-
-2.  **Imagen JVM:**
-    - **Descripci��n:** Una imagen tradicional basada en una Java Virtual Machine (JVM). Es robusta y universalmente compatible.
-    - **Etiquetas:** `latest-jvm`, `<version>-jvm`, `<major>.<minor>-jvm`, `<commit-sha>-jvm`
-    - **Uso recomendado:** Desarrollo, depuración o entornos donde no se requiere el máximo rendimiento de arranque.
+- **Imagen JVM:** Imagen tradicional basada en Java Virtual Machine, robusta y universalmente compatible.
+  - **Etiquetas:** `latest`, `<version>`, `<major>.<minor>`, `<commit-sha>`
+  - **Uso recomendado:** Desarrollo, depuración, producción.
