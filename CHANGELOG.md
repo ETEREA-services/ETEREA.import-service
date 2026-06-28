@@ -6,6 +6,24 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/en/1.0.
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [2.1.1] - 2026-06-28
+### Changed
+- Actualización de Spring Boot 4.0.2 → 4.1.0.
+- Actualización de Spring Cloud 2025.1.0 → 2025.1.2.
+- Actualización de MySQL Connector 9.5.0 → 9.7.0.
+- Actualización de SpringDoc OpenAPI 3.0.1 → 3.0.3.
+- Refactorización: uso de `@RequiredArgsConstructor` en `OrderNoteController` y `WordPressController`.
+- Actualización de GitHub Actions a versiones más recientes (checkout v6, setup-java v5, cache v5, etc.).
+
+### Fixed
+- Corregido formato de fechas ISO 8601 en modelos `OrderNote` y `Product`: patrón `Z` → `XX` para cumplimiento de estándar.
+
+### Removed
+- Eliminado `Dockerfile.local` obsoleto.
+- Eliminados comentarios sobre GraalVM del workflow de CI/CD.
+
+> _Fuente: análisis de `git diff HEAD`, `pom.xml`, y cambios en código fuente._
+
 ## [2.1.0] - 2026-02-14
 ### Changed
 - Refactorización de paquetes: `eterea.migration.api.rest.*` → `eterea.migration.rest.*` para mejor organización del código.
