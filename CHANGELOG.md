@@ -6,6 +6,29 @@ El formato está basado en [Keep a Changelog](https://keepachangelog.com/en/1.0.
 y este proyecto adhiere a [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [2.2.0] - 2026-06-30
+### Added
+- Nuevo endpoint `GET /api/wordpress/capture/from-apis/export-feed` con método `captureFromExportFeed()` en `OrderNoteWebService`, que consume la cola de trabajo `export-feed` de la Query API de WordPress.
+- Scheduling del importador `export-feed` configurable vía propiedad `app.wordpress.export-feed-cron` (variable de entorno `WORDPRESS_EXPORT_FEED_CRON`, modificable desde docker-compose sin recompilar).
+- Propiedad `app.wordpress.export-recheck-days` (`WORDPRESS_EXPORT_RECHECK_DAYS`, por defecto 2) para la ventana de re-verificación del `export-feed`.
+- Nuevo método `WordPressApiClient.fetchExportFeed()` y manejo del sobre paginado (`PagedModel`: `content` + `page`) de la Query API.
+- Nuevo método `ToolService.truncate(String, int)` para recortar valores a la longitud de columna y evitar errores "Data too long" (SQLState 22001); aplicado a `billingCity` (255).
+- Nivel de log de SQL de Hibernate configurable de forma independiente vía `app.logging-sql` (por defecto `warn`), desacoplado de `app.logging`.
+- Anotación `@JsonIgnoreProperties(ignoreUnknown = true)` en los DTOs `extern` (`OrderNoteWeb`, `PaymentWeb`, `ProductWeb`, `ProductTransactionWeb`, `InformacionPagadorWeb`) para tolerar campos nuevos de la API.
+- Nuevo test `whenExportFeedEndpointIsCalled_thenServiceIsInvokedAndReturnsOk` en `WordPressControllerTest`.
+- Documentación `docs/WORDPRESS_API.md` de la nueva Query API.
+
+### Changed
+- Migración de la ingesta de órdenes desde archivos JSON (SFTP) hacia la Query API de WordPress por HTTP; la lógica de persistencia se unifica en `processOrderNotes()`, compartida por las rutas de archivo y de API (comportamiento de persistencia idéntico).
+- Configuración de WordPress de modelo multi-sitio (`site1`/`site2`) a un único sitio (`app.wordpress.site`), con un solo bean `wordPressApiClient` en `WordPressClientConfig`.
+- Frecuencia por defecto del importador programado: cada 30 minutos → cada 5 minutos (`0 */5 * * * *`).
+- Corregido el nombre de paquete del logger en `bootstrap.yml`: `eterea.migration.api.rest` → `eterea.migration.rest`.
+- Reducido el ruido de logs por orden a nivel INFO: el volcado del objeto completo pasa a DEBUG y se deja una traza concisa `Processing order N (status=...)`; los errores de importación por orden pasan de INFO a WARN.
+
+### Documented
+- Comentario `// TODO` sobre `processOrderNotes()` señalando una mejora futura: hacer el método `@Transactional` por orden (atomicidad de las 5 escrituras). Se deja sin cambios de lógica a propósito durante la migración archivo→HTTP.
+
+
 ## [2.1.1] - 2026-06-28
 ### Changed
 - Actualización de Spring Boot 4.0.2 → 4.1.0.

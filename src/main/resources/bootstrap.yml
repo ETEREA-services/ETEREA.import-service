@@ -15,16 +15,13 @@ app:
   hours-offset: 1
   local-path: /tmp/
   wordpress:
-    site1:
-      name: hoteltermascacheuta
-      base-url: ${WORDPRESS_SITE1_BASE_URL:https://hoteltermascacheuta.com/wp-json/custom-orders/v1/orders}
-      username: ${WORDPRESS_SITE1_USERNAME}
-      password: ${WORDPRESS_SITE1_PASSWORD}
-    site2:
+    export-recheck-days: ${WORDPRESS_EXPORT_RECHECK_DAYS:2}
+    export-feed-cron: ${WORDPRESS_EXPORT_FEED_CRON:0 */5 * * * *}
+    site:
       name: termascacheuta
-      base-url: ${WORDPRESS_SITE2_BASE_URL:https://termascacheuta.com/wp-json/custom-orders/v1/orders}
-      username: ${WORDPRESS_SITE2_USERNAME}
-      password: ${WORDPRESS_SITE2_PASSWORD}
+      base-url: ${WORDPRESS_API_BASE_URL:http://10.147.21.140:8081/api/v1}
+      username: ${WORDPRESS_SITE_USERNAME:}
+      password: ${WORDPRESS_SITE_PASSWORD:}
 
 server:
   port: ${app.port}
@@ -55,9 +52,9 @@ spring:
 
 logging:
   level:
-    eterea.migration.api.rest: ${app.logging}
+    eterea.migration.rest: ${app.logging}
     web: ${app.logging}
     org:
       hibernate:
-        SQL: ${app.logging}
+        SQL: ${app.logging-sql:warn}
       springframework.cloud.config: ${app.logging}

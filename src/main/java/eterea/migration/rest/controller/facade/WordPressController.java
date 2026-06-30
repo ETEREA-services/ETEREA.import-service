@@ -25,9 +25,14 @@ public class WordPressController {
    private final OrderNoteWebService service;
 
    @GetMapping("/capture")
-   @Scheduled(cron = "0 0/30 * * * ?")
    public ResponseEntity<List<OrderNoteWeb>> capture() {
       return new ResponseEntity<>(service.capture(), HttpStatus.OK);
+   }
+
+   @GetMapping("/capture/from-apis/export-feed")
+   @Scheduled(cron = "${app.wordpress.export-feed-cron:0 */10 * * * *}")
+   public ResponseEntity<List<OrderNoteWeb>> captureFromExportFeed() {
+      return new ResponseEntity<>(service.captureFromExportFeed(), HttpStatus.OK);
    }
 
    @GetMapping("/capture/from-apis")
@@ -46,8 +51,8 @@ public class WordPressController {
       return new ResponseEntity<>(service.captureFromApi(fromDateTime, toDateTime), HttpStatus.OK);
    }
 
+   // Manual-only date-range read path. The export-feed job is the scheduled importer.
    @GetMapping("/capture/from-apis/last-twelve-hours")
-   @Scheduled(cron = "0 */10 * * * *")
    public ResponseEntity<List<OrderNoteWeb>> captureFromApisLastTwelveHours() {
 
       ZoneId utcMinus3 = ZoneId.of("America/Argentina/Buenos_Aires");

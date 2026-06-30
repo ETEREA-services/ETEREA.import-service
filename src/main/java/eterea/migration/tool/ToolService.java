@@ -87,6 +87,22 @@ public class ToolService {
         return result.toString();
     }
 
+    /**
+     * Trunca un texto para que quepa en una columna de longitud fija.
+     * Devuelve {@code null} si la entrada es {@code null}, evitando que un valor
+     * mas largo que la columna provoque un "Data too long" (SQLState 22001) al persistir.
+     *
+     * @param input    el texto a normalizar (puede ser {@code null})
+     * @param maxLength longitud maxima permitida por la columna destino
+     * @return el texto recortado a {@code maxLength} caracteres, o {@code null}
+     */
+    public static String truncate(String input, int maxLength) {
+        if (input == null || input.length() <= maxLength) {
+            return input;
+        }
+        return input.substring(0, maxLength);
+    }
+
     private static String left(String string, Integer count) {
         if (string.length() > count) {
             return string.substring(0, count);

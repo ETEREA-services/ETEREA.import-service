@@ -39,4 +39,19 @@ class WordPressControllerTest {
         // verify that the service method was called exactly once
         verify(orderNoteWebService, times(1)).capture();
     }
+
+    @Test
+    @WithMockUser
+    void whenExportFeedEndpointIsCalled_thenServiceIsInvokedAndReturnsOk() throws Exception {
+        // given
+        when(orderNoteWebService.captureFromExportFeed()).thenReturn(Collections.emptyList());
+
+        // when / then
+        mockMvc.perform(get("/api/wordpress/capture/from-apis/export-feed"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("[]"));
+
+        // verify that the service method was called exactly once
+        verify(orderNoteWebService, times(1)).captureFromExportFeed();
+    }
 }
